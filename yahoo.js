@@ -1,13 +1,10 @@
 var http = require("http");
+var key = '&oauth=6e874e71d6bf3b10888b7d20615a9f3e95dce5ab';
+var yahoo = "http://ichart.finance.yahoo.com/table.csv?";
+var debug = true;
 
 
-(function() {
-	var key = '&oauth=6e874e71d6bf3b10888b7d20615a9f3e95dce5ab';
-	var yahoo = "http://ichart.finance.yahoo.com/table.csv?";
-	var debug = true;
-function Yahoo() {
-
-}
+function Yahoo() { }
 
 /* Contructors */
 function Query(stock, to) {
@@ -40,14 +37,10 @@ function Query(stock, to) {
 	    callback(null);
 	  });
 	}
-
-
-
 };
 
+
 /* Methods */
-
-
 Yahoo.prototype.buildQuery = function(stock, to, from) {
 	var query = new Query(stock, to);
 	console.log(query.build());
@@ -56,6 +49,3 @@ Yahoo.prototype.buildQuery = function(stock, to, from) {
 }
 
 module.exports = Yahoo;
-
-
-})();
