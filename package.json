@@ -1,34 +1,16 @@
 {
-  "name": "enterpriser",
+  "name": "application-name",
   "version": "0.0.1",
-  "description": "A fun RTS game written in JavaScript, based on stock data",
-  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "express": "2.5.8",
+    "jade": ">= 0.0.1"
+  },
+  "description": "ERROR: No README data found!",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/YRSNorwich/enterpriser.git"
-  },
-  "keywords": [
-    "game",
-    "rts",
-    "stock",
-    "market",
-    "stocks",
-    "data",
-    "open"
-  ],
-  "author": "YRSNorwich",
-  "license": "WTFPL",
-  "bugs": {
-    "url": "https://github.com/YRSNorwich/enterpriser/issues"
-  },
-  "homepage": "https://github.com/YRSNorwich/enterpriser",
-  "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
-    "express": "^4.7.2",
-    "mongoose": "^3.8.14",
-    "passport": "^0.2.0"
-  }
+  "author": "",
+  "license": "BSD-2-Clause"
 }
