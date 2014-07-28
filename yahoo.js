@@ -39,8 +39,6 @@ Yahoo.prototype.csv2json = function(data, strip) {
   				delete parsed.fields.splice(i,1);
   			}
   		}
-  		
-  		
   	}
   	for(row in parsed["rows"]) {
     	for(var i = 0; i < strip.length; i++) {
@@ -65,7 +63,6 @@ Yahoo.prototype.writeOut = function(options, callback) {
     		callback((err) ? console.log( err ) : console.log("Success!"));
   		});
 	}
-	
 }
 
 
