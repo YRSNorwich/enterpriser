@@ -4,15 +4,18 @@
  */
 
 var express = require('express');
+var mongoose = require('mongoose');
+var passport = require('passport');
 var bodyParser = require('body-parser');
 var connectFlash = require('connect-flash');
-var methodOverride = require('method-override');
 var expressSession = require('express-session');
+var methodOverride = require('method-override');
 
-var indexRoutes = require('./routes/index');
 var authRoutes = require('./routes/auth');
+var indexRoutes = require('./routes/index');
 
 var app = module.exports = express();
+mongoose.connect('mongodb://localhost/enterpriser');
 
 // Configuration
 
@@ -22,11 +25,26 @@ app.use(expressSession({ secret: 'nope' }));
 app.use(bodyParser());
 app.use(methodOverride());
 app.use(connectFlash());
+app.use(passport.initialize());
 app.use(express.static(__dirname + '/public'));
+
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
 
 // Routes
 
 app.get('/', indexRoutes.index);
-app.post('/login', authRoutes.login);
+app.get('/login', authRoutes.loginForm);
+app.get('/register', authRoutes.registrationForm);
 
-app.listen(3000);7
+app.post('/login', authRoutes.login);
+app.post('/register', authRoutes.register);
+
+app.listen(3000);

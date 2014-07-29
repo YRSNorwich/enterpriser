@@ -35,6 +35,7 @@
     "method-override": "^2.1.2",
     "mongoose": "^3.8.14",
     "passport": "^0.2.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "validator": "^3.16.1"
   }
 }
