@@ -25,7 +25,7 @@ Yahoo.prototype.buildQuery = function(stock, to, from) {
 //Executes a query towards Yahoo! The amazing api that is the only one availiable :(})
 Yahoo.prototype.executeQuery = function(query, callback) {
 	query.request(function(data){
-		callback(data, this);	
+		callback.bind(this)(data);	
 	}.bind(this));
 }
 

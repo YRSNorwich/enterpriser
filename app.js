@@ -44,25 +44,44 @@ app.get('/', routes.index);
 
 //Testing Yahoo Module
 //test();
-csvGrabberTest("./companies.csv");
+//csvGrabberTest("./companies.csv");
+//Got up to entry 136
 function csvGrabberTest(string) {
+
   var grabber = new csvGrabber();
   var file;
   grabber.loadFile(string, babyParseConfig, ["LastSale", "MarketCap", "ADR TSO", "IPOyear", "Sector", "Summary Quote"], function(jsonFile) {
-    grabber.writeFile({ name: "COMPANIES.txt", result: jsonFile.json }, function(status) {
-      console.log(status);
-    });
+    for(var i in jsonFile.jsonObject["rows"]) {
+        (function(i) {
+          setTimeout(function() {
+              var Yahoo = new yahoo(babyParseConfig);
+              var company = jsonFile.jsonObject["rows"][i]["Symbol"];
+              var newQuery = Yahoo.buildQuery(company, "2004");
+              Yahoo.executeQuery(newQuery, function(data) {
+                var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
+                  var doptions = { name: "./res/" + company, query: newQuery, result: json };
+                  //Doptions: Data and options! Combined!!
+                  Yahoo.writeOut(doptions, function(status) {
+                    console.log(status);
+                  });
+              });
+              console.log(i);
+
+          }, 5000 * i);
+        })(i);
+
+    }
+    
   });
 
 }
 
 
 function test() {
-  
   var Yahoo = new yahoo(babyParseConfig);
   var googleQuery = Yahoo.buildQuery("GOOGL", "2013");
-  Yahoo.executeQuery(googleQuery, function(data, that) {
-    var json = that.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
+  Yahoo.executeQuery(googleQuery, function(data) {
+    var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
     var doptions = { name: "GOOGL", query: googleQuery, result: json };
     //Doptions: Data and options! Combined!!
     Yahoo.writeOut(doptions, function(status) {
