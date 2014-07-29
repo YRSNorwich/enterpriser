@@ -1,8 +1,8 @@
 'use strict';
+
 /**
  * Module dependencies.
  */
-
 var express = require('express');
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -80,7 +80,7 @@ function csvGrabberTest(string) {
 
   var grabber = new csvGrabber();
   var file;
-  grabber.loadFile(string, babyParseConfig, ["LastSale", "MarketCap", "ADR TSO", "IPOyear", "Sector", "Summary Quote"], function(jsonFile) {
+  grabber.loadFile(string, babyParseConfig, ["LastSale", "MarketCap", "ADR TSO", "IPOyear", "Sector", "Summary Quote", "Volume"], function(jsonFile) {
     for(var i in jsonFile.jsonObject["rows"]) {
         (function(i) {
           setTimeout(function() {
