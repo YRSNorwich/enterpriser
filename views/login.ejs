@@ -1,0 +1,6 @@
+<%= typeof loginError === "undefined" ? "" : loginError %>
+<form action="/login" method="post">
+	<input type="text" name="username"></input>
+	<input type="pass" name="password"></input>
+	<input type="submit" value="Submit">
+</form>
