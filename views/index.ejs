@@ -1,4 +1,4 @@
-<%- include layout.ejs %>
+<%- include header %>
 
 
 <body>
@@ -21,8 +21,6 @@
 
     <section class="companyCard">
 
-
-
     <section id="info">
       <div id="name"><h2>Apple</h2></div>
       <div id="amount">
@@ -33,8 +31,8 @@
       </div>
     </section>
 
-        <input id="amountShares"></input>
-        <button id="placeOrder">Place Order</button>
+      <input id="amountShares"></input>
+      <button id="placeOrder">Place Order</button>
       <div id="stats"></div>
       You will be able to buy and sell shares here, and show the stats of other companies.
     </section>
@@ -59,4 +57,4 @@
 </section>
 <script src="javascripts/main.js"></script>
 </body>
-</html>
+<% include footer %>
