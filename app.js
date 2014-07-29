@@ -11,6 +11,7 @@ var connectFlash = require('connect-flash');
 var expressSession = require('express-session');
 var methodOverride = require('method-override');
 
+var ajaxRoutes = require('./routes/ajax');
 var authRoutes = require('./routes/auth');
 var indexRoutes = require('./routes/index');
 
@@ -64,6 +65,8 @@ passport.deserializeUser(function (id, done) {
 app.get('/', indexRoutes.index);
 app.get('/login', authRoutes.loginForm);
 app.get('/register', authRoutes.registrationForm);
+app.get('/ajax/list', ajaxRoutes.companyList);
+app.get('/ajax/stock/:id/:date', ajaxRoutes.companyStockPrice);
 
 app.post('/login', authRoutes.login);
 app.post('/register', authRoutes.register);
@@ -86,7 +89,7 @@ function csvGrabberTest(string) {
               var newQuery = Yahoo.buildQuery(company, "2004");
               Yahoo.executeQuery(newQuery, function(data) {
                 var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
-                  var doptions = { name: "./res/" + company, query: newQuery, result: json };
+                  var doptions = { name: "./res/" + company + ".json", query: newQuery, result: json };
                   //Doptions: Data and options! Combined!!
                   Yahoo.writeOut(doptions, function(status) {
                     console.log(status);
