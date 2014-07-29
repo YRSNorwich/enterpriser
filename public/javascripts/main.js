@@ -10,26 +10,18 @@
 
       //Autocomplete
       //Shizzy jQuery ui autocomplete
-
-
-
       companyFinderAutocomplete.autocomplete({
         minLength: 1,
         source: function(req, res) {
-
-
           $.getJSON("http://127.0.0.1:3000/ajax/list/", function(data) {
             var newList = [];
             for (var i in data) {
-              if( data[i].search(req.term) !== -1 ) {
-                newList.push(data[i]);
-              } else {
-
-              }
+              console.log(data[i]);
+              if( data[i]["name"].search(req.term) !== -1 ) {
+                newList.push(data[i]["name"]);
+              } else { }
             }
-            console.log(newList);
             res(newList);
-
           });
         },
         select: function(event, ui) { },
@@ -44,7 +36,6 @@
               event.preventDefault();
               return false;
         }
-
       })
     });
 
