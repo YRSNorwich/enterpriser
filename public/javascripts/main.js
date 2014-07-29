@@ -7,6 +7,13 @@
 
       //vars
       var companyFinderAutocomplete = $("#companySearch");
+      var shareAmountSlider = $('#amountShares');
+
+      //Slider
+      var arrayOfSliders = $(".slider").each(function(slider) {
+        $(slider).slider();
+      });
+
 
       //Autocomplete
       //Shizzy jQuery ui autocomplete
@@ -14,11 +21,13 @@
         minLength: 1,
         source: function(req, res) {
           $.getJSON("http://127.0.0.1:3000/ajax/list/", function(data) {
-            var newList = [];
+            var newList = {};
             for (var i in data) {
-              console.log(data[i]);
-              if( data[i]["name"].search(req.term) !== -1 ) {
-                newList.push(data[i]["name"]);
+              if( (data[i]["name"] + " | " + i).search(req.term) !== -1 ) {
+                var tempList = {};
+                tempList["label"] =  data[i]["name"] + " | " + i;
+                tempList["value"] = i;
+                newList[i] = (tempList);
               } else { }
             }
             res(newList);
@@ -31,17 +40,12 @@
         },
         focus: function (event, ui) {
               //Set content to value just for sake of niceness
-              companyFinderAutocomplete.val(ui.item.label);
+              console.log(ui.item);
+              //companyFinderAutocomplete.val(ui.item.value);
               $(".ui-helper-hidden-accessible").hide();
               event.preventDefault();
               return false;
         }
       })
     });
-
-
-
-
-
-
 })(jQuery)

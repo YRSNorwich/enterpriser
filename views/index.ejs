@@ -1,60 +1,13 @@
 <%- include header %>
 
-
 <body>
+
 <section class="main">
-  <section class="playView">
-
-    <section id="left">
-
-      <section id="search">
-        <h2>Search For Company:</h2>
-        <div class="ui-widget">
-
-
-        <div class="ui-front">
-          <input id="companySearch" type="text" placeholder="Find Company">
-          <div class="ui-helper-hidden-accessible"></div>
-        </div>
-      </div>
-      </section>
-
-    <section class="companyCard">
-
-    <section id="info">
-      <div id="name"><h2>Apple</h2></div>
-      <div id="amount">
-      <ul>
-        <li>Stock Price: 90</li>
-        <li>Stock Availiable: 1000</li>
-      </ul>
-      </div>
-    </section>
-
-      <input id="amountShares"></input>
-      <button id="placeOrder">Place Order</button>
-      <div id="stats"></div>
-      You will be able to buy and sell shares here, and show the stats of other companies.
-    </section>
-  </section>
-
-
-    <section id="companyGraphic">
-        <div id="tips">Tips for the user.</div>
-    </section>
-
-    <section id="right">
-      <section class="yourCard">
-      <div id="gMap">Map</div>
-      <div id="info">Info</div>
-      <div id="stats">Stats</div>
-      Here you will have a screen showing your companies information.
-    </section>
-  </section>
-
-
-  </section>
+<% include playview %>
 </section>
+
 <script src="javascripts/main.js"></script>
+
 </body>
+
 <% include footer %>
