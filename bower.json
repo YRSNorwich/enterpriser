@@ -1,0 +1,15 @@
+{
+  "name": "enterpriser",
+  "version": "0.0.1",
+  "dependencies": {
+    "jquery": "~1.10.2",
+    "jquery-ui": "~1.11.0"
+  },
+  "install": {
+    "path": {
+      "css": "public/stylesheets",
+      "js": "public/javascripts"
+    },
+    "private": true
+  }
+}
