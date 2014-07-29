@@ -37,6 +37,8 @@
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
     "validator": "^3.16.1",
-    "babyparse": "0.1.0"
+    "babyparse": "0.1.0",
+    "connect-flash": "~0.1.1",
+    "ejs-locals": "~1.0.2"
   }
 }
