@@ -7,6 +7,10 @@
       var companyFinderAutocomplete = $("#companySearch");
       var shareAmountSlider = $('#amountShares');
 
+      var testGame = new Game(gameId);
+      testGame.init();
+
+
       //Slider
       $(".slider").slider({
         min: 0,
@@ -35,7 +39,16 @@
             res(newList);
           });
         },
-        select: function(event, ui) { },
+        select: function(event, ui) {
+          var newCompany = new companyCard(ui.item, ui.item.value);
+          newCompany.getData(function(data) {
+            newCompany.setData(data, function(bindingData) {
+              newCompany.bindView($("#companyCard"),bindingData, function() {
+
+              });
+            })
+          });
+        },
         messages: {
           noResults: '',
           results: function() {}

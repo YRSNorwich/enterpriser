@@ -12,17 +12,17 @@
         <div class="ui-helper-hidden-accessible"></div>
       </div>
     </div>
-    </section>
+  </section>
 
-  <section class="companyCard">
+  <section id="companyCard">
 
   <section id="info"><!-- rivets.bind($("#info"),blah)-->
-    <div id="name"><h2 data-text='info:name'>Apple</h2></div>
-    <div id="code"><h3 data-text='info:code'>AAPL</h3></div>
-    <div id="amount" data-show="info:available">
+    <div id="name"><h2 rv-text='companyCard.name'>Apple</h2></div>
+    <div id="code"><h3 rv-text='companyCard.code'>AAPL</h3></div>
+    <div id="amount">
     <ul>
-      <li data-text="amount:stockprice">Stock Price: 90</li>
-      <li data-text="amount:stockavailable">Stock Availiable: 1000</li>
+      <li rv-text="companyCard.stockprice">Stock Price: 90</li>
+      <li rv-text="companyCard.stockavailable">Stock Availiable: 1000</li>
     </ul>
     </div>
 
@@ -43,9 +43,15 @@
   </section>
 
   <section id="right">
-    <section class="yourCard">
-    <div id="gMap">Map</div>
-    <div id="info">Info</div>
+  <section class="yourCard">
+
+
+    <!--<div id="gMap">Map</div>-->
+
+    <div id="info">
+      <h2 id="companyName" rv-text="yourCard.name"></h2>
+      <h3 id="companyId" rv-text="yourCard.id"></h2>
+    </div>
     <div id="stats">Stats</div>
     Here you will have a screen showing your companies information.
   </section>
