@@ -35,6 +35,9 @@ a {
 #info #name {
   text-align: center;
 }
+#info #code {
+  text-align: center;
+}
 
 #right, #left {
   background-color: gray;

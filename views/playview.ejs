@@ -16,22 +16,25 @@
 
   <section class="companyCard">
 
-  <section id="info">
-    <div id="name"><h2>Apple</h2></div>
-    <div id="amount">
+  <section id="info"><!-- rivets.bind($("#info"), {info: blah})-->
+    <div id="name"><h2 data-text='info:name'>Apple</h2></div>
+    <div id="code"><h3 data-text='info:code'>AAPL</h3></div>
+    <div id="amount" data-show="info:available"> <!-- rivets.bind($("#amount"), {amount: blah})-->
     <ul>
-      <li>Stock Price: 90</li>
-      <li>Stock Availiable: 1000</li>
+      <li data-text="amount:stockprice">Stock Price: 90</li>
+      <li data-text="amount:stockavailable">Stock Availiable: 1000</li>
     </ul>
     </div>
 
   </section>
 
+  <div id="orderStock">
     <div class="slider" id="amountShares"></div>
     <button id="placeOrder">Place Order</button>
     <div id="stats"></div>
-    You will be able to buy and sell shares here, and show the stats of other companies.
+  </div>
   </section>
+
 </section>
 
 

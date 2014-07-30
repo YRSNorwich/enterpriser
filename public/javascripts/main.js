@@ -1,5 +1,3 @@
-
-
 (function($) {
     $.noConflict();
     $(document).ready(function() {
@@ -10,10 +8,14 @@
       var shareAmountSlider = $('#amountShares');
 
       //Slider
-      var arrayOfSliders = $(".slider").each(function(slider) {
-        $(slider).slider();
-      });
-
+      $(".slider").slider({
+        min: 0,
+        max: 1000,
+        step: 1,
+        slide: function(event, ui) {
+          $("#orderAmount").html( "Stock: " + ui.value);
+        }
+      }).before("<div style='text-align: center;' id='orderAmount'>Stock: 0</div>");
 
       //Autocomplete
       //Shizzy jQuery ui autocomplete
