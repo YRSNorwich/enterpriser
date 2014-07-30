@@ -9,7 +9,7 @@ passport.use(strategy);
 
 var routes = {
 	successRedirect: '/',
-	failureRedirect: '/login',
+	failureRedirect: '/',
 	failureFlash: true
 };
 
@@ -18,7 +18,7 @@ exports.login = passport.authenticate('local', routes);
 function failRegistration (req, res, message)
 {
 	req.flash('registrationError', message);
-	res.redirect('/register');
+	res.redirect('/');
 }
 
 exports.register = function (req, res)
@@ -53,14 +53,8 @@ exports.register = function (req, res)
 	}
 }
 
-exports.loginForm = function (req, res)
+exports.logout = function (req, res)
 {
-	var loginError = req.flash('error');
-	loginError = loginError === undefined ? undefined : loginError[0];
-	res.render('login', { loginError: loginError });
-}
-
-exports.registrationForm = function (req, res)
-{
-	res.render('register', { registrationError: req.flash('registrationError') });
+	res.logout();
+	res.redirect('/');
 }
