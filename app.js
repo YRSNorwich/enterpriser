@@ -90,10 +90,10 @@ function csvGrabberTest(string) {
           setTimeout(function() {
               var Yahoo = new yahoo(babyParseConfig);
               var company = jsonFile.jsonObject["rows"][i]["Symbol"];
-              var newQuery = Yahoo.buildQuery(company, "2004");
+              var newQuery = Yahoo.buildQuery(company, "2000");
               Yahoo.executeQuery(newQuery, function(data) {
                 var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
-                  var doptions = { name: "./res/" + company + ".json", query: newQuery, result: json };
+                  var doptions = { name: "./res/temp/" + company + ".json", query: newQuery, result: json };
                   //Doptions: Data and options! Combined!!
                   Yahoo.writeOut(doptions, function(status) {
                     console.log(status);
@@ -110,7 +110,7 @@ function csvGrabberTest(string) {
 
 }
 
-
+/*Reference Function
 function test() {
   var Yahoo = new yahoo(babyParseConfig);
   var googleQuery = Yahoo.buildQuery("GOOGL", "2013");
@@ -124,6 +124,6 @@ function test() {
   });
 
 
-}
+}*/
 
 app.listen(3000);

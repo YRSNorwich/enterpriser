@@ -12,11 +12,11 @@ companyCard.prototype.getData = function(callback) {
   if( this.view ) {
     this.view.unbind();
     console.log(this.view);
-    jQuery.getJSON(("http://127.0.0.1:3000/ajax/stock/"+this.id+"/ehwkw000"), function(data){
+    jQuery.getJSON(("http://127.0.0.1:3000/ajax/stock/"+this.id+"/"+game.gameData.date), function(data){
       callback(data);
     }.bind(this))
   } else {
-    jQuery.getJSON(("http://127.0.0.1:3000/ajax/stock/"+this.id+"/ehwkw000"), function(data){
+    jQuery.getJSON(("http://127.0.0.1:3000/ajax/stock/"+this.id+"/"+game.gameData.date), function(data){
       callback(data);
     }.bind(this))
   }
