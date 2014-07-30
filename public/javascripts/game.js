@@ -2,7 +2,7 @@ function Game() {
   this.time = "1/1/2004";
   this.sessionId;
   this.ajaxReq = "http://127.0.0.1:3000/ajax/game"
-
+  this.currentCompanyCard;
   this.gameData = {
     companyName: null,
     companyId: null,
@@ -35,6 +35,7 @@ Game.prototype.init = function(id) {
 Game.prototype.setBind = function(data, element, callback) {
   this.view = rivets.bind(element, { yourCard: this.gameData });
 }
+
 
 Game.prototype.getData = function(id, callback) {
   jQuery.getJSON((this.ajaxReq+"/"+id), function(data){

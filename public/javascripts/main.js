@@ -7,10 +7,15 @@
       var companyFinderAutocomplete = $("#companySearch");
       var shareAmountSlider = $('#amountShares');
 
-      var testGame = new Game(gameId);
-      testGame.init(gameId);
 
-
+      window.game = new Game(gameId);
+      game.companyCard = null;
+      game.sliderValue;
+      if(gameId){
+        game.init(gameId);
+      } else {
+        game.init(0);
+      }
 
       //Slider
       $(".slider").slider({
@@ -19,6 +24,7 @@
         step: 1,
         slide: function(event, ui) {
           $("#orderAmount").html( "Stock: " + ui.value);
+          game.sliderValue = ui.value;
         }
       }).before("<div style='text-align: center;' id='orderAmount'>Stock: 0</div>");
 
@@ -41,10 +47,10 @@
           });
         },
         select: function(event, ui) {
-          var newCompany = new companyCard(ui.item, ui.item.value);
-          newCompany.getData(function(data) {
-            newCompany.setData(data, function(bindingData) {
-              newCompany.bindView($("#companyCard"), bindingData, function() {
+          game.companyCard = new companyCard(ui.item, ui.item.value);
+          game.companyCard.getData(function(data) {
+            game.companyCard.setData(data, function(bindingData) {
+              game.companyCard.bindView($("#companyCard"), bindingData, function() {
 
               });
             })

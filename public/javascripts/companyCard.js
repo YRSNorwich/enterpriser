@@ -25,6 +25,7 @@ companyCard.prototype.getData = function(callback) {
 //Binds the card's data to a specified rivets template element ej $("#info")
 companyCard.prototype.bindView = function(element, bindObj, callback) {
   this.companyCard = bindObj;
+  this.companyCard.stockavailable = 1000;
   this.view = rivets.bind(element, { companyCard: this.companyCard });
   callback(!this.view);
 };
@@ -39,9 +40,31 @@ companyCard.prototype.setData = function(data, callback) {
 
 //Calculates the stock available of the company (ie user has already bought some)
 companyCard.prototype.calculateStock = function() {
-
+  var boughtData = game.gameData.bought;
+  for(var i in boughtData) {
+    if(this.id === i) {
+      this.companyCard.stockavailable -= boughtData[i];
+      jQuery(".slider").max = this.companyCard.stockavailable;
+    }
+  }
 };
+
+jQuery("#placeOrder").on("click", function(e) {
+  if(game.companyCard.stockPrice !== "Stock Not available") {
+    game.companyCard.placeOrder(game.companyCard.id, game.sliderValue, game.companyCard.stockPrice);
+  } else {
+    alert("Cannot place order for stocks because at this time there is no stock data available for this company/it does not exist :D");
+  }
+
+
+});
+
 //Places an order for stock: sends a POST request to the api to set the user's owned stock in this company to x amount.
-companyCard.prototype.placeOrder = function() {
+companyCard.prototype.placeOrder = function(stockId, amount, price) {
+  var orderPrice = (amount*price)
+  game.gameData.bought[stockId] = ~~game.gameData.bought[stockId] + amount;
+  this.calculateStock();
+  game.gameData.balance -= orderPrice;
+  console.log(" User: "+ game.sessionId + " Bought stock in: " + stockId + " Amount: " + amount);
 
 };
