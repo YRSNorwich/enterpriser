@@ -25,7 +25,7 @@
           $.getJSON("http://127.0.0.1:3000/ajax/list/", function(data) {
             var newList = {};
             for (var i in data) {
-              if( (data[i]["name"] + " | " + i).search(req.term) !== -1 ) {
+              if( (data[i]["name"] + " | " + i).toUpperCase().search(req.term.toUpperCase()) !== -1 ) {
                 var tempList = {};
                 tempList["label"] =  data[i]["name"] + " | " + i;
                 tempList["value"] = i;
