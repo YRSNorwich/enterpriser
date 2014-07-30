@@ -7,6 +7,10 @@
       var companyFinderAutocomplete = $("#companySearch");
       var shareAmountSlider = $('#amountShares');
 
+      var testGame = new Game(gameId);
+      testGame.init();
+
+
       //Slider
       $(".slider").slider({
         min: 0,
@@ -25,7 +29,7 @@
           $.getJSON("http://127.0.0.1:3000/ajax/list/", function(data) {
             var newList = {};
             for (var i in data) {
-              if( (data[i]["name"] + " | " + i).search(req.term) !== -1 ) {
+              if( (data[i]["name"] + " | " + i).toUpperCase().search(req.term.toUpperCase()) !== -1 ) {
                 var tempList = {};
                 tempList["label"] =  data[i]["name"] + " | " + i;
                 tempList["value"] = i;
@@ -35,7 +39,16 @@
             res(newList);
           });
         },
-        select: function(event, ui) { },
+        select: function(event, ui) {
+          var newCompany = new companyCard(ui.item, ui.item.value);
+          newCompany.getData(function(data) {
+            newCompany.setData(data, function(bindingData) {
+              newCompany.bindView($("#companyCard"),bindingData, function() {
+
+              });
+            })
+          });
+        },
         messages: {
           noResults: '',
           results: function() {}
