@@ -1,6 +1,6 @@
-function Game(id) {
-  this.time = "1/1/2004";
-  this.sessionId = id;
+function Game() {
+  this.time = "3/1/2004";
+  this.sessionId;
   this.ajaxReq = "http://127.0.0.1:3000/ajax/game"
   this.currentCompanyCard;
   this.gameData = {
@@ -8,10 +8,11 @@ function Game(id) {
     companyId: null,
     balance: 100000,
     shares: 1000,
+    sharePrice: (this.balance / this.shares),
     bought: {},
     date: this.dateTo36(this.time)
   }
-  this.sharePrice = (this.gameData.balance / this.gameData.shares);
+
   this.view = null;
 }
 
@@ -49,9 +50,9 @@ Game.prototype.setGameData = function(data) {
   this.gameData.companyId = data["companyId"];
   this.gameData.balance = data["balance"];
   this.gameData.shares = data["shares"];
-  this.sharePrice = (this.gameData.balance/this.gameData.shares);
+  this.gameData.sharePrice = (this.gameData.balance/this.gameData.shares);
   (data["bought"]) ? this.gameData.bought = data["bought"] : false;
-  this.gameData.date = data["day"];
+  this.gameData.date = data["day"].substring(0,10);
 }
 
 

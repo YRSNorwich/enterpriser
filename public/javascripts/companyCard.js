@@ -11,12 +11,13 @@ function companyCard(name, id) {
 companyCard.prototype.getData = function(callback) {
   if( this.view ) {
     this.view.unbind();
-    console.log(this.view);
-    jQuery.getJSON(("http://127.0.0.1:3000/ajax/stock/"+this.id+"/"+game.gameData.date), function(data){
+
+    jQuery.getJSON(("/ajax/stock/"+this.id+"/"+game.dateTo36(game.gameData.date)), function(data){
       callback(data);
     }.bind(this))
   } else {
-    jQuery.getJSON(("http://127.0.0.1:3000/ajax/stock/"+this.id+"/"+game.gameData.date), function(data){
+    console.log(game.gameData.date, game.dateTo36(game.gameData.date)); //HOLY CRAP I BE STUPID
+    jQuery.getJSON(("/ajax/stock/"+this.id+"/"+game.dateTo36(game.gameData.date)), function(data){
       callback(data);
     }.bind(this))
   }

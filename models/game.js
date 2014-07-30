@@ -13,7 +13,7 @@ var gameSchema = new Schema({
 	balance: { type: Number, default: 10000 },
 	shares: { type: Number, default: 1000 },
 	bought: { type: {}, default: {} },
-	day: { type: Date, default: '1/1/2004' }
+	day: { type: Date, default: '12/29/2003' }
 });
 
 module.exports = exports = mongoose.model('Game', gameSchema);
