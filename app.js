@@ -13,6 +13,7 @@ var methodOverride = require('method-override');
 
 var ajaxRoutes = require('./routes/ajax');
 var authRoutes = require('./routes/auth');
+var gameRoutes = require('./routes/game');
 var indexRoutes = require('./routes/index');
 
 var routes = require('./routes'),
@@ -63,13 +64,16 @@ passport.deserializeUser(function (id, done) {
 // Routes
 
 app.get('/', indexRoutes.index);
-app.get('/login', authRoutes.loginForm);
-app.get('/register', authRoutes.registrationForm);
 app.get('/ajax/list', ajaxRoutes.companyList);
 app.get('/ajax/stock/:id/:date', ajaxRoutes.companyStockPrice);
 
 app.post('/login', authRoutes.login);
 app.post('/register', authRoutes.register);
+app.get('/logout', authRoutes.logout);
+
+app.get('/ajax/game/:id', gameRoutes.giveJson);
+app.post('/ajax/game/:id', gameRoutes.receiveJson);
+app.post('/game/new', gameRoutes.newGame);
 
 
 //Testing Yahoo Module

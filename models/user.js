@@ -7,7 +7,7 @@ var userSchema = new Schema({
 	username: String,
 	email: String,
 	password: String,
-	games: [mongoose.model('Game')]
+	games: [Schema.ObjectId]
 });
 
 module.exports = exports = mongoose.model('User', userSchema);

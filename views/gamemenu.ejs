@@ -1,0 +1,13 @@
+<section class="gameMenu">
+    <% for (var gameIndex = 0; gameIndex < games.length; gameIndex++) { %>
+        <a href="/?gameId=<%= gameIndex %>">
+            <p><strong><%= games[gameIndex].companyName %></strong> Corporations</p>
+        </a>
+    <% } %>
+    <form action="/game/new" method="post">
+        <input type="text" name="companyName"></input> Corporations
+        <p>
+            <input type="submit" value="Create Game..."></input>
+        </p>
+    </form>
+</section>
