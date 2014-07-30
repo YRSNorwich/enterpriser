@@ -51,7 +51,7 @@ Game.prototype.setGameData = function(data) {
   this.gameData.shares = data["shares"];
   this.sharePrice = (this.gameData.balance/this.gameData.shares);
   (data["bought"]) ? this.gameData.bought = data["bought"] : false;
-  this.gameData.date = data["date"];
+  this.gameData.date = data["day"];
 }
 
 

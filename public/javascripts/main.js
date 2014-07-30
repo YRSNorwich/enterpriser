@@ -33,7 +33,7 @@
       companyFinderAutocomplete.autocomplete({
         minLength: 1,
         source: function(req, res) {
-          $.getJSON("http://127.0.0.1:3000/ajax/list/", function(data) {
+          $.getJSON("/ajax/list/", function(data) {
             var newList = {};
             for (var i in data) {
               if( (data[i]["name"] + " | " + i).toUpperCase().search(req.term.toUpperCase()) !== -1 ) {

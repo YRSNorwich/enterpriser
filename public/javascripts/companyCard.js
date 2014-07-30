@@ -27,6 +27,7 @@ companyCard.prototype.bindView = function(element, bindObj, callback) {
   this.companyCard = bindObj;
   this.companyCard.stockavailable = 1000;
   this.view = rivets.bind(element, { companyCard: this.companyCard });
+  this.calculateStock();
   callback(!this.view);
 };
 //Sets the bind data to the card's value
@@ -61,22 +62,21 @@ jQuery("#placeOrder").on("click", function(e) {
 
 //Places an order for stock: sends a POST request to the api to set the user's owned stock in this company to x amount.
 companyCard.prototype.placeOrder = function(stockId, amount, price) {
-  
-  var orderPrice = (amount*price)
-  game.gameData.bought[stockId] = ~~game.gameData.bought[stockId] + amount;
-  this.calculateStock();
+  console.log(this.companyCard.stockavailable);
+  var orderPrice = (amount*price);
+  if(game.gameData.balance >= orderPrice && (this.companyCard.stockavailable-amount) > 0) {
+    game.gameData.bought[stockId] = ~~game.gameData.bought[stockId] + amount; //AMAZING
+    this.calculateStock(); //Calculates new stock price
+    game.gameData.balance -= orderPrice;//Minus from da balance
+    console.log(" User: "+ game.sessionId + " Bought stock in: " + stockId + " Amount: " + amount); //Validate order
+    jQuery.post("/ajax/game/"+game.sessionId, game.gameData, function(data, err){
+      console.log(data);
+      console.log(err);
+    }); //Push da order to da server;
 
-
-  game.gameData.balance -= orderPrice;
-
-
-  console.log(" User: "+ game.sessionId + " Bought stock in: " + stockId + " Amount: " + amount);
-
-
-  jQuery.post("/ajax/game/"+game.sessionId, game.gameData, function(data, err){
-    console.log(data);
-    console.log(err);
-  })
+  } else {
+    alert("You don't have enough money at this time to buy this much stock in this company! Try selling some / making more money and trying again.");
+  }
 
 
 
