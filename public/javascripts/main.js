@@ -8,7 +8,8 @@
       var shareAmountSlider = $('#amountShares');
 
       var testGame = new Game(gameId);
-      testGame.init();
+      testGame.init(gameId);
+
 
 
       //Slider
@@ -43,7 +44,7 @@
           var newCompany = new companyCard(ui.item, ui.item.value);
           newCompany.getData(function(data) {
             newCompany.setData(data, function(bindingData) {
-              newCompany.bindView($("#companyCard"),bindingData, function() {
+              newCompany.bindView($("#companyCard"), bindingData, function() {
 
               });
             })

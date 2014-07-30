@@ -2,14 +2,18 @@ function Game() {
   this.time = "1/1/2004";
   this.sessionId;
   this.ajaxReq = "http://127.0.0.1:3000/ajax/game"
+
   this.gameData = {
     companyName: null,
     companyId: null,
     balance: 100000,
     shares: 1000,
+    sharePrice: (this.balance / this.shares),
     bought: {},
     date: this.dateTo36(this.time)
   }
+
+  this.view = null;
 }
 
 Game.prototype.dateTo36 = function(str) {
@@ -18,18 +22,18 @@ Game.prototype.dateTo36 = function(str) {
 //ID = NON LITERAL EG: 1!!!!
 Game.prototype.init = function(id) {
   this.getData(id, function(data) {
-    console.log("POO");
-    this.setGameData(data, function() {
-      this.setBind(this.gameData, function() {
+
+      this.setGameData(data)
+      this.setBind(this.gameData, jQuery(".yourCard"), function(res) {
 
       });
 
-    });
-  });
+
+  }.bind(this));
 }
 
-Game.prototype.setBind = function(data, callback) {
-
+Game.prototype.setBind = function(data, element, callback) {
+  this.view = rivets.bind(element, { yourCard: this.gameData });
 }
 
 Game.prototype.getData = function(id, callback) {
@@ -40,14 +44,14 @@ Game.prototype.getData = function(id, callback) {
 
 
 
-Game.prototype.setGameData = function(data, callback) {
-  this.gameData.companyName = data["name"];
-  this.gameData.companyId = data["id"];
+Game.prototype.setGameData = function(data) {
+  this.gameData.companyName = data["companyName"];
+  this.gameData.companyId = data["companyId"];
   this.gameData.balance = data["balance"];
   this.gameData.shares = data["shares"];
-  this.gameData.bought = data["bought"];
+  this.gameData.sharePrice = (this.gameData.balance/this.gameData.shares);
+  (data["bought"]) ? this.gameData.bought = data["bought"] : false;
   this.gameData.date = data["date"];
-  callback();
 }
 
 

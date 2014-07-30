@@ -1,60 +1,47 @@
 <script>var gameId = <%= gameId %></script>
 <section class="playView">
-
   <section id="left">
-
     <section id="search">
       <h2>Search For Company:</h2>
       <div class="ui-widget">
-
-
-      <div class="ui-front">
-        <input id="companySearch" type="text" placeholder="Find Company">
-        <div class="ui-helper-hidden-accessible"></div>
+        <div class="ui-front">
+          <input id="companySearch" type="text" placeholder="Find Company">
+          <div class="ui-helper-hidden-accessible"></div>
+        </div>
       </div>
-    </div>
+    </section>
+    <section id="companyCard">
+      <section id="info"><!-- rivets.bind($("#info"),blah)-->
+        <div id="name"><h2 rv-text='companyCard.name'>Apple</h2></div>
+        <div id="code"><h3 rv-text='companyCard.code'>AAPL</h3></div>
+        <div id="amount">
+          <ul>
+            <li rv-text="companyCard.stockprice">Stock Price: 90</li>
+            <li rv-text="companyCard.stockavailable">Stock Availiable: 1000</li>
+          </ul>
+        </div>
+      </section>
+      <div id="orderStock">
+        <div class="slider" id="amountShares"></div>
+        <button id="placeOrder">Place Order</button>
+        <div id="stats"></div>
+      </div>
+    </section>
   </section>
-
-  <section id="companyCard">
-
-  <section id="info"><!-- rivets.bind($("#info"),blah)-->
-    <div id="name"><h2 rv-text='companyCard.name'>Apple</h2></div>
-    <div id="code"><h3 rv-text='companyCard.code'>AAPL</h3></div>
-    <div id="amount">
-    <ul>
-      <li rv-text="companyCard.stockprice">Stock Price: 90</li>
-      <li rv-text="companyCard.stockavailable">Stock Availiable: 1000</li>
-    </ul>
-    </div>
-
-  </section>
-
-  <div id="orderStock">
-    <div class="slider" id="amountShares"></div>
-    <button id="placeOrder">Place Order</button>
-    <div id="stats"></div>
-  </div>
-  </section>
-
-</section>
-
-
   <section id="companyGraphic">
-      <div id="tips">Tips for the user.</div>
+    <div id="tips">Tips for the user.</div>
   </section>
-
   <section id="right">
-  <section class="yourCard">
-
-
-    <!--<div id="gMap">Map</div>-->
-
-    <div id="info">
-      <h2 id="companyName" rv-text="yourCard.name"></h2>
-      <h3 id="companyId" rv-text="yourCard.id"></h2>
-    </div>
-    <div id="stats">Stats</div>
-    Here you will have a screen showing your companies information.
+    <section class="yourCard">
+      <div id="info">
+        <h2 id="companyName" rv-text="yourCard.companyName"></h2>
+        <h3 id="companyId" rv-text="yourCard.companyId"></h3>
+        <h3>Your Balance:</h3><h4 rv-text="yourCard.balance"></h4>
+        <h3>Shares:</h3><h4 rv-text="yourCard.shares"></h4>
+        <h3>Shares Price:</h3><h4 rv-text="yourCard.sharePrice"></h4>
+      </div>
+      <div id="stats">Stats</div>
+      Here you will have a screen showing your companies information.
+    </section>
   </section>
-</section>
 </section>
