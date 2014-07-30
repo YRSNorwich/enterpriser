@@ -70,4 +70,46 @@
         }
       })
     });
+
+    //Valuation Graph
+    var data = [];
+    var lengthLimit = 50;
+
+    var valueGraphOptions = {
+        series: {
+            color: 'red',
+            lines: {
+                show: true
+            },
+            points: {
+                show: false
+            }
+        },
+        xaxis: {
+            show: false
+        }
+    }
+
+    window.pushGraphValue = function (value)
+    {
+        data.push(value);
+        if (data.length > lengthLimit)
+        {
+            data.splice(0, data.length - lengthLimit);
+        }
+
+        var plottableData = [[]];
+        for (var i = 0; i < data.length; i++)
+        {
+            plottableData[0].push([i, data[i]]);
+        }
+
+        $('#valueGraph').plot(
+            plottableData,
+            valueGraphOptions
+        );
+    }
+
+    window.pushGraphValue(10000);
+    window.pushGraphValue(10000);
 })(jQuery)
