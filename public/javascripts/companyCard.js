@@ -61,10 +61,24 @@ jQuery("#placeOrder").on("click", function(e) {
 
 //Places an order for stock: sends a POST request to the api to set the user's owned stock in this company to x amount.
 companyCard.prototype.placeOrder = function(stockId, amount, price) {
+  
   var orderPrice = (amount*price)
   game.gameData.bought[stockId] = ~~game.gameData.bought[stockId] + amount;
   this.calculateStock();
+
+
   game.gameData.balance -= orderPrice;
+
+
   console.log(" User: "+ game.sessionId + " Bought stock in: " + stockId + " Amount: " + amount);
+
+
+  jQuery.post("/ajax/game/"+game.sessionId, game.gameData, function(data, err){
+    console.log(data);
+    console.log(err);
+  })
+
+
+
 
 };

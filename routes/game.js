@@ -65,7 +65,8 @@ exports.receiveJson = function (req, res)
 			if (id < user.games.length && id >= 0)
 			{
 				var Game = mongoose.model('Game');
-				Game.update({ _id: user.games[id] }, request.body, function (error, game) {
+				console.log(req.body);
+				Game.update({ _id: user.games[id] }, req.body, function (error, game) {
 					if (error)
 					{
 						res.json({ error: 'Error connecting to the database, or your JSON is funky? :O' });
