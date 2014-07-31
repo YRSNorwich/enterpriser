@@ -213,6 +213,8 @@
             canvasTowers.add(Prism(positions[index], 1, 1, height), colors[index]);
 
             index++;
+
+            // TODO render windows; we want to know that they're buildings!
         }
 
         // TODO render tower labels
