@@ -20,7 +20,14 @@
         game.init(0);
       }
 
+      game.companyCard = new companyCard(["APPLE", "AAPL"], "AAPL");
+                game.companyCard.getData(function(data) {
+                    game.companyCard.setData(data, function(bindingData) {
+                        game.companyCard.bindView($("#companyCard"), bindingData, function() {
 
+                        });
+                    })
+                });
         //Slider
         $(".slider").slider({
             min: 0,

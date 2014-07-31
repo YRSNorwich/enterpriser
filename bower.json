@@ -6,7 +6,8 @@
     "jquery-ui": "~1.11.0",
     "isomer": "~0.2.4",
     "rivets": "~0.6.8",
-    "flot": "~0.8.3"
+    "flot": "~0.8.3",
+    "moment": "~2.8.0"
   },
   "install": {
     "path": {
