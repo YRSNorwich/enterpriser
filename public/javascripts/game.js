@@ -1,8 +1,9 @@
 
-function Game(id) {
-
 var IDEAL_TPS = 60;
 var IDEAL_TICK_DURATION = 1000 / IDEAL_TPS;
+
+function Game(id) {
+
 
   this.time = "3/1/2004";
   this.sessionId = id;
@@ -21,13 +22,15 @@ var IDEAL_TICK_DURATION = 1000 / IDEAL_TPS;
   }
 
   this.view = null;
+
 }
 
 Game.prototype.dateTo36 = function(str) {
-  return new Date(str).getTime().toString(36);
+    return new Date(str).getTime().toString(36);
 }
 //ID = NON LITERAL EG: 1!!!!
 Game.prototype.init = function(id) {
+
 
 
 
@@ -37,6 +40,7 @@ Game.prototype.init = function(id) {
       this.setBind(this.gameData, jQuery(".yourCard"), function(res) {
         this.setPortfolio([this.gameData, data], jQuery(".portfolio"), function(e) {
           view = rivets.bind(jQuery(".portfolio"), {companies: e });
+          game.tick();
         });
       }.bind(this));
 
@@ -84,28 +88,29 @@ Game.prototype.getDataForCompany = function(id, callback) {
   jQuery.getJSON(("/ajax/stock/"+id+"/"+this.dateTo36(this.gameData.date)), function(data){
     callback(data);
   }.bind(this))
+
 }
 
 
 Game.prototype.getData = function(id, callback) {
+
   jQuery.getJSON((this.ajaxReq+"/"+id), function(data){
     jQuery.getJSON(("/ajax/list/"), function(data1){
       callback(data);
       this.rawData = data1;
     }.bind(this))
   }.bind(this));
+
 };
 
-
-
 Game.prototype.setGameData = function(data) {
-  this.gameData.companyName = data["companyName"];
-  this.gameData.companyId = data["companyId"];
-  this.gameData.balance = data["balance"];
-  this.gameData.shares = data["shares"];
-  this.gameData.sharePrice = (this.gameData.balance/this.gameData.shares);
-  (data["bought"]) ? this.gameData.bought = data["bought"] : false;
-  this.gameData.date = data["day"].substring(0,10);
+    this.gameData.companyName = data["companyName"];
+    this.gameData.companyId = data["companyId"];
+    this.gameData.balance = data["balance"];
+    this.gameData.shares = data["shares"];
+    this.gameData.sharePrice = (this.gameData.balance/this.gameData.shares);
+    (data["bought"]) ? this.gameData.bought = data["bought"] : false;
+    this.gameData.date = data["day"].substring(0,10);
 }
 
 Game.prototype.tick = function () {
@@ -125,6 +130,8 @@ Game.prototype.tick = function () {
 
         console.log('FPS:', this.fps);
     }
+
+    window.renderTowers();
 
     if (this.secondsActive % 10 === 0) {
         if (!this.doneThisSecond) {
