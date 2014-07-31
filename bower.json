@@ -4,12 +4,14 @@
   "dependencies": {
     "jquery": "~1.10.2",
     "jquery-ui": "~1.11.0",
-    "isomer": "~0.2.4"
+    "isomer": "~0.2.4",
+    "rivets": "~0.6.8",
+    "flot": "~0.8.3"
   },
   "install": {
     "path": {
-      "css": "public/stylesheets",
-      "js": "public/javascripts"
+      "css": "public/stylesheets/vendor",
+      "js": "public/javascripts/vendor"
     },
     "private": true
   }

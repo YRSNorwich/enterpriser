@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * Module dependencies.
- */
+* Module dependencies.
+*/
 var express = require('express');
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -16,9 +16,9 @@ var authRoutes = require('./routes/auth');
 var gameRoutes = require('./routes/game');
 var indexRoutes = require('./routes/index');
 
-var routes = require('./routes'),
-    yahoo = require('./yahoo.js'),
-    csvGrabber = require('./csvgrabr.js');
+var routes = require('./routes');
+var yahoo = require('./lib/yahoo.js');
+var csvGrabber = require('./lib/csvgrabr.js');
 
 var debug = true;
 
@@ -51,13 +51,13 @@ app.use(connectFlash());
 app.use(passport.initialize());
 app.use(express.static(__dirname + '/public'));
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
+passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
-        done(err, user);
+	   done(err, user);
     });
 });
 
@@ -78,50 +78,50 @@ app.post('/game/new', gameRoutes.newGame);
 
 //Testing Yahoo Module
 //test();
-//csvGrabberTest("./companies.csv");
+//csvGrabberTest("../data/companies.csv");
 //Got up to entry 136
 function csvGrabberTest(string) {
 
-  var grabber = new csvGrabber();
-  var file;
-  grabber.loadFile(string, babyParseConfig, ["LastSale", "MarketCap", "ADR TSO", "IPOyear", "Sector", "Summary Quote", "Volume"], function(jsonFile) {
-    for(var i in jsonFile.jsonObject["rows"]) {
-        (function(i) {
-          setTimeout(function() {
-              var Yahoo = new yahoo(babyParseConfig);
-              var company = jsonFile.jsonObject["rows"][i]["Symbol"];
-              var newQuery = Yahoo.buildQuery(company, "2000");
-              Yahoo.executeQuery(newQuery, function(data) {
-                var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
-                  var doptions = { name: "./res/temp/" + company + ".json", query: newQuery, result: json };
-                  //Doptions: Data and options! Combined!!
-                  Yahoo.writeOut(doptions, function(status) {
-                    console.log(status);
-                  });
-              });
-              console.log(i);
+    var grabber = new csvGrabber();
+    var file;
+    grabber.loadFile(string, babyParseConfig, ["LastSale", "MarketCap", "ADR TSO", "IPOyear", "Sector", "Summary Quote", "Volume"], function(jsonFile) {
+	   for(var i in jsonFile.jsonObject["rows"]) {
+		  (function(i) {
+			 setTimeout(function() {
+				var Yahoo = new yahoo(babyParseConfig);
+				var company = jsonFile.jsonObject["rows"][i]["Symbol"];
+				var newQuery = Yahoo.buildQuery(company, "2000");
+				Yahoo.executeQuery(newQuery, function(data) {
+				    var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
+				    var doptions = { name: "./res/temp/" + company + ".json", query: newQuery, result: json };
+				    //Doptions: Data and options! Combined!!
+				    Yahoo.writeOut(doptions, function(status) {
+					   console.log(status);
+				    });
+				});
+				console.log(i);
 
-          }, 5000 * i);
-        })(i);
+			 }, 5000 * i);
+		  })(i);
 
-    }
+	   }
 
-  });
+    });
 
 }
 
 /*Reference Function
 function test() {
-  var Yahoo = new yahoo(babyParseConfig);
-  var googleQuery = Yahoo.buildQuery("GOOGL", "2013");
-  Yahoo.executeQuery(googleQuery, function(data) {
-    var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
-    var doptions = { name: "GOOGL", query: googleQuery, result: json };
-    //Doptions: Data and options! Combined!!
-    Yahoo.writeOut(doptions, function(status) {
-      console.log(status);
-    });
-  });
+var Yahoo = new yahoo(babyParseConfig);
+var googleQuery = Yahoo.buildQuery("GOOGL", "2013");
+Yahoo.executeQuery(googleQuery, function(data) {
+var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
+var doptions = { name: "GOOGL", query: googleQuery, result: json };
+//Doptions: Data and options! Combined!!
+Yahoo.writeOut(doptions, function(status) {
+console.log(status);
+});
+});
 
 
 }*/
