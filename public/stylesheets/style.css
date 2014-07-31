@@ -55,7 +55,16 @@ a {
   float: left;
   text-align: center;
   width: 50%;
+}
 
+#backgroundTowers {
+    background-color: #D8EDF2;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 #placeOrder {
@@ -65,7 +74,6 @@ a {
 #left {
   float: left;
   width: 25%;
-
 }
 
 #search {

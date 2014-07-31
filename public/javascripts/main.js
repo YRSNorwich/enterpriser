@@ -90,7 +90,12 @@
         }
     }
 
-    window.pushGraphValue = function (value)
+    /**
+     * Append a value to the graph, removing an older value if necessary to fit.
+     *
+     * @param {Number} value - the value on the y-axis of the new point
+     */
+    window.pushGraphValue = function(value)
     {
         data.push(value);
         if (data.length > lengthLimit)
@@ -112,4 +117,39 @@
 
     window.pushGraphValue(10000);
     window.pushGraphValue(10000);
+
+    //Background Towers, powered by isomer
+
+    var backgroundTowersCanvas = document.getElementById('backgroundTowers');
+
+    function fitCanvasToWindow(canvas) {
+        var win = $(window);
+        canvas.width = win.width() * 2;
+        canvas.height = win.height() * 2;
+    }
+
+    jQuery(window).on('resize', fitCanvasToWindow.bind(null, backgroundTowersCanvas));
+    fitCanvasToWindow(backgroundTowersCanvas);
+
+    var canvasTowers = new Isomer(backgroundTowersCanvas);
+    var greenColor = new Isomer.Color(149, 195, 63);
+
+    /**
+     * Render towers with Isomer to show visual proof.
+     *
+     * @param {Object} towers - towers in JSON Object form { towerName: relativeHeight }
+     */
+    window.renderTowers = function(towers) {
+        // clear screen
+        fitCanvasToWindow(backgroundTowersCanvas);
+
+        // render ground
+        canvasTowers.add(Isomer.Shape.Prism(Isomer.Point.ORIGIN, 8, 8, 1), greenColor);
+
+        // TODO render towers
+
+        // TODO render tower labels
+    }
+
+    renderTowers({});
 })(jQuery)
