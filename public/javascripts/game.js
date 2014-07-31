@@ -71,6 +71,8 @@ Game.prototype.tick = function () {
         console.log('FPS:', this.fps);
     }
 
+    window.renderTowers();
+
     if (this.secondsActive % 10 === 0) {
         if (!this.doneThisSecond) {
             // occurs once every ten seconds - will be used for chatting to server/advancing date, etc
