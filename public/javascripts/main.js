@@ -7,7 +7,7 @@
         var companyFinderAutocomplete = $("#companySearch");
         var shareAmountSlider = $('#amountShares');
 
-        
+
         window.game = new Game(gameId);
         game.companyCard = null;
         game.sliderValue;
@@ -41,75 +41,113 @@
                             tempList["label"] =	data[i]["name"] + " | " + i;
                             tempList["value"] = i;
                             newList[i] = (tempList);
-                        } else { }
                         }
-                        res(newList);
-                    });
-                },
-                select: function(event, ui) {
-                    game.companyCard = new companyCard(ui.item, ui.item.value);
-                    game.companyCard.getData(function(data) {
-                        game.companyCard.setData(data, function(bindingData) {
-                            game.companyCard.bindView($("#companyCard"), bindingData, function() {
-
-                            });
-                        })
-                    });
-                },
-                messages: {
-                    noResults: '',
-                    results: function() {}
-                },
-                focus: function (event, ui) {
-                    //Set content to value just for sake of niceness
-                    console.log(ui.item);
-                    //companyFinderAutocomplete.val(ui.item.value);
-                    $(".ui-helper-hidden-accessible").hide();
-                    event.preventDefault();
-                    return false;
-                }
-            })
-        });
-
-        //Valuation Graph
-        var data = [];
-        var lengthLimit = 50;
-
-        var valueGraphOptions = {
-            series: {
-                color: 'red',
-                lines: {
-                    show: true
-                },
-                points: {
-                    show: false
-                }
+                    }
+                    res(newList);
+                });
             },
-            xaxis: {
+            select: function(event, ui) {
+                game.companyCard = new companyCard(ui.item, ui.item.value);
+                game.companyCard.getData(function(data) {
+                    game.companyCard.setData(data, function(bindingData) {
+                        game.companyCard.bindView($("#companyCard"), bindingData, function() {
+
+                        });
+                    })
+                });
+            },
+            messages: {
+                noResults: '',
+                results: function() {}
+            },
+            focus: function (event, ui) {
+                //Set content to value just for sake of niceness
+                console.log(ui.item);
+                //companyFinderAutocomplete.val(ui.item.value);
+                $(".ui-helper-hidden-accessible").hide();
+                event.preventDefault();
+                return false;
+            }
+        })
+    });
+
+    //Valuation Graph
+    var data = [];
+    var lengthLimit = 50;
+
+    var valueGraphOptions = {
+        series: {
+            color: 'red',
+            lines: {
+                show: true
+            },
+            points: {
                 show: false
             }
+        },
+        xaxis: {
+            show: false
+        }
+    }
+
+    /**
+    * Append a value to the graph, removing an older value if necessary to fit.
+    *
+    * @param {Number} value - the value on the y-axis of the new point
+    */
+    window.pushGraphValue = function(value) {
+        data.push(value);
+        if (data.length > lengthLimit) {
+            data.splice(0, data.length - lengthLimit);
         }
 
-        window.pushGraphValue = function (value)
+        var plottableData = [[]];
+        for (var i = 0; i < data.length; i++)
         {
-            data.push(value);
-            if (data.length > lengthLimit)
-                {
-                    data.splice(0, data.length - lengthLimit);
-                }
+            plottableData[0].push([i, data[i]]);
+        }
 
-                var plottableData = [[]];
-                for (var i = 0; i < data.length; i++)
-                    {
-                        plottableData[0].push([i, data[i]]);
-                    }
+        $('#valueGraph').plot(
+            plottableData,
+            valueGraphOptions
+        );
+    }
 
-                    $('#valueGraph').plot(
-                        plottableData,
-                        valueGraphOptions
-                    );
-                }
+    window.pushGraphValue(10000);
+    window.pushGraphValue(10000);
 
-                window.pushGraphValue(10000);
-                window.pushGraphValue(10000);
-            })(jQuery)
+    //Background Towers, powered by isomer
+
+    var backgroundTowersCanvas = document.getElementById('backgroundTowers');
+
+    function fitCanvasToWindow(canvas) {
+        var win = $(window);
+        canvas.width = win.width() * 2;
+        canvas.height = win.height() * 2;
+    }
+
+    jQuery(window).on('resize', fitCanvasToWindow.bind(null, backgroundTowersCanvas));
+    fitCanvasToWindow(backgroundTowersCanvas);
+
+    var canvasTowers = new Isomer(backgroundTowersCanvas);
+    var greenColor = new Isomer.Color(149, 195, 63);
+
+    /**
+    * Render towers with Isomer to show visual proof.
+    *
+    * @param {Object} towers - towers in JSON Object form { towerName: relativeHeight }
+    */
+    window.renderTowers = function(towers) {
+        // clear screen
+        fitCanvasToWindow(backgroundTowersCanvas);
+
+        // render ground
+        canvasTowers.add(Isomer.Shape.Prism(Isomer.Point.ORIGIN, 8, 8, 1), greenColor);
+
+        // TODO render towers
+
+        // TODO render tower labels
+    }
+
+    renderTowers({});
+})(jQuery)

@@ -4,6 +4,7 @@
   "dependencies": {
     "jquery": "~1.10.2",
     "jquery-ui": "~1.11.0",
+    "isomer": "~0.2.4",
     "rivets": "~0.6.8",
     "flot": "~0.8.3"
   },
