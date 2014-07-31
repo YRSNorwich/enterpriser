@@ -1,86 +1,84 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 header, footer {
-	margin: 10px;
-	width: 100%;
-	border-bottom: 1px solid #444;
-	padding: 10px;
+    margin: 10px;
+    width: 100%;
+    border-bottom: 1px solid #444;
+    padding: 10px;
 }
 
 header {
-	text-align: center;
-
+    text-align: center;
 }
 
 footer {
-	border: none;
-	border-top: 1px solid #444;
+    border: none;
+    border-top: 1px solid #444;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
 }
 
 .companyCard {
-  background-color: blue;
+    background-color: blue;
 }
 
 #info {
-  margin: 10px;
+    margin: 10px;
 
 }
 #info #name {
-  text-align: center;
+    text-align: center;
 }
 #info #code {
-  text-align: center;
+    text-align: center;
 }
 
 #right, #left {
-  background-color: gray;
-  width: 25%;
-  position: relative;
-  padding: 20px;
+    background-color: gray;
+    width: 25%;
+    position: relative;
+    padding: 20px;
 }
 
 #right {
-  float: right;
-  height: 100%;
+    float: right;
+    height: 100%;
 }
 
 #companyGraphic {
-  float: left;
-  text-align: center;
-  width: 50%;
+    float: left;
+    text-align: center;
+    width: 50%;
 
 }
 
 #placeOrder {
- display: inline-block;
+    display: inline-block;
 }
 
 #left {
-  float: left;
-  width: 25%;
-
+    float: left;
+    width: 25%;
 }
 
 #search {
-  margin: 10px;
-  text-align: center;
+    margin: 10px;
+    text-align: center;
 }
 
 #amountShares {
-  margin: 10px auto;
-  display: block;
+    margin: 10px auto;
+    display: block;
 }
 
 #placeOrder {
-  margin: 10px auto;
-  display: block;
+    margin: 10px auto;
+    display: block;
 }
 
 #valueGraph {

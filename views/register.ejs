@@ -1,9 +1,9 @@
 <body>
-<%= typeof registrationError === "undefined" ? "" : registrationError %>
-<form action="/register" method="post">
-	<input type="text" name="username"></input>
-	<input type="text" name="email"></input>
-	<input type="pass" name="password"></input>
-	<input type="submit" value="Submit">
-</form>
+	<%= typeof registrationError === "undefined" ? "" : registrationError %>
+	<form action="/register" method="post">
+		<input type="text" name="username"></input>
+		<input type="text" name="email"></input>
+		<input type="pass" name="password"></input>
+		<input type="submit" value="Submit">
+	</form>
 </body>
