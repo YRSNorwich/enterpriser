@@ -29,3 +29,7 @@ res
 
 # Bower dependencies
 public/*/vendor
+
+# Compiled SCSS
+public/stylesheets/*.css
+.sass-cache
