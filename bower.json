@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "dependencies": {
     "jquery": "~1.10.2",
-    "jquery-ui": "~1.11.0"
+    "jquery-ui": "~1.11.0",
+    "isomer": "~0.2.4"
   },
   "install": {
     "path": {
