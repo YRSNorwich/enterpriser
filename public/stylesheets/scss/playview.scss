@@ -59,6 +59,24 @@ body
 	{
 		-webkit-flex: 1;
 		flex: 1;
+
+		#info
+		{
+			#companyName, #companyId
+			{
+				text-align: center;
+			}
+		}
+
+		ul.portfolio
+		{
+			list-style: none;
+			
+			li:empty
+			{
+				display: none;
+			}
+		}
 	}
 
 	#left, #right

@@ -41,22 +41,25 @@
 <section id="right">
 	<section class="yourCard">
 		<div id="info">
-			<h3>Company Name: </h3><h3 id="companyName" rv-text="yourCard.companyName"></h3>
-			<h3>Company Code: </h3><h3 id="companyId" rv-text="yourCard.companyId"></h3>
-			<h3>Your Balance: </h3><h4 rv-text="yourCard.balance"></h4>
-			<h3>Shares: </h3><h4 rv-text="yourCard.shares"></h4>
-			<h3>Share Price: </h3><h4 rv-text="yourCard.sharePrice"></h4>
+			<h2 id="companyName" rv-text="yourCard.companyName"></h3>
+			<h3 id="companyId" rv-text="yourCard.companyId"></h3>
+			<hr>
+			<p>Your Balance ($): </p><h4 rv-text="yourCard.balance"></h4>
+			<p>Shares: </p><h4 rv-text="yourCard.shares"></h4>
+			<p>Share Price ($): </p><h4 rv-text="yourCard.sharePrice"></h4>
+			<hr>
 			<div id="portfolio">
 				<h3>Your Portfolio</h3>
         <ul id="portlist">
         </ul>
+		<hr>
 				<ul class="portfolio">
 					<li rv-text="portdata.name"></li>
 					<li rv-text="portdata.id"></li>
 					<li rv-text="portdata.shares"></li>
 					<li rv-text="portdata.price"></li>
 					<li rv-text="portdata.balVal"></li>
-					<hr/>
+					<hr>
 					<h3>Sell your stocks in this company</h3>
 					<input placeholder="Amount to sell"></input>
 					<button rv-on-click="portfoli.sell"></button>
@@ -64,6 +67,7 @@
 			</div>
 		</div>
 	</section>
+	<hr>
 	<div id="valueGraph"></div>
 	<div id="stats">Stats</div>
 </section>
