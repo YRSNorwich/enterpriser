@@ -17,8 +17,8 @@ var gameRoutes = require('./routes/game');
 var indexRoutes = require('./routes/index');
 
 var routes = require('./routes');
-var yahoo = require('./yahoo.js');
-var csvGrabber = require('./csvgrabr.js');
+var yahoo = require('./lib/yahoo.js');
+var csvGrabber = require('./lib/csvgrabr.js');
 
 var debug = true;
 
