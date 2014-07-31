@@ -69,7 +69,7 @@ Game.prototype.setPortfolio = function(data, element, callback) {
 
 jQuery("body").on("click", ".portfolioSelect", function(e){
   var id = jQuery(this).attr("href"));
-  game.setPortData(this.gameData["bought"], id)
+//  game.setPortData(this.gameData["bought"], id)
 
 
   e.preventDefault();
