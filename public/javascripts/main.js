@@ -217,7 +217,7 @@
             // TODO render windows; we want to know that they're buildings!
         }
 
-        // TODO render tower labels
+        // TODO render tower labels, maybe use a color key?
     }
 
     renderTowers({});
