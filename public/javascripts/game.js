@@ -158,12 +158,14 @@ Game.prototype.tick = function () {
 
     window.renderTowers();
 
+    // test line window.renderTowers({'FRAN': 4, 'GOOG': 2, 'AAPL': 3, 'MICR': 3.25, 'SANF': 3.1111, 'EEJ': 2, 'MJIC': 1.2});
+
     if (this.secondsActive % 10 === 0) {
         if (!this.doneThisSecond) {
           var tempDate = new Date(this.gameData.day);
           tempDate.setDate(tempDate.getDate() + 1);
           this.gameData.day = new Date(tempDate.toUTCString());
-          
+
           console.log(this.gameData.day);
 
           jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
@@ -172,8 +174,8 @@ Game.prototype.tick = function () {
               this.setGameData(data);
 
                 this.setPortData(game.gameData, this.portCard.id);
-                
-            
+
+
 
             }.bind(this));
 
