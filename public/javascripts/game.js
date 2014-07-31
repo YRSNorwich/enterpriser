@@ -67,13 +67,22 @@ Game.prototype.tick = function () {
     this.framesThisSecond = ~~this.framesThisSecond + 1;
     this.progressThisSecond = (this.progressThisSecond || 0) + delta;
 
-    if (this.progressThisSecond > IDEAL_TPS)
-    {
+    if (this.progressThisSecond > IDEAL_TPS) {
         this.fps = this.framesThisSecond;
         this.framesThisSecond = 0;
         this.progressThisSecond = 0;
+        this.secondsActive = (this.secondsActive || 0) + 1;
 
         console.log('FPS:', this.fps);
+    }
+
+    if (this.secondsActive % 10 === 0) {
+        if (!this.doneThisSecond) {
+            // occurs once every ten seconds - will be used for chatting to server/advancing date, etc
+            this.doneThisSecond = true;
+        }
+    } else {
+        this.doneThisSecond = false;
     }
 
     requestAnimationFrame(this.tick.bind(this));
