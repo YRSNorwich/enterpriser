@@ -1,4 +1,9 @@
+
 function Game(id) {
+
+var IDEAL_TPS = 60;
+var IDEAL_TICK_DURATION = 1000 / IDEAL_TPS;
+
   this.time = "3/1/2004";
   this.sessionId = id;
   this.ajaxReq = "/ajax/game"
@@ -30,8 +35,10 @@ Game.prototype.init = function(id) {
       console.log(data, this.gameData);
       this.setGameData(data);
       this.setBind(this.gameData, jQuery(".yourCard"), function(res) {
-        this.setPortfolio();
-      });
+        this.setPortfolio([this.gameData, data], jQuery(".portfolio"), function(e) {
+          view = rivets.bind(jQuery(".portfolio"), {companies: e });
+        });
+      }.bind(this));
 
 
   }.bind(this));
@@ -43,9 +50,18 @@ Game.prototype.setBind = function(data, element, callback) {
   callback();
 }
 
-Game.prototype.setPortfolio = function(callback) {
-  var data = this.rawData;
+Game.prototype.setPortfolio = function(data, element, callback) {
 
+    var companies =  [
+      {name: "poo"},
+      {name: "1"},
+      {name: 10}
+    ]
+
+
+
+  callback(companies);
+/*
   var total = [];
     for(var i in data.bought) {
       var buildEntry = {id: i, stockAvailable: data.bought[i]}
@@ -59,7 +75,7 @@ Game.prototype.setPortfolio = function(callback) {
       //worth *= data.bought[i];
 
 
-    }
+    }*/
 
 
 }
@@ -92,11 +108,38 @@ Game.prototype.setGameData = function(data) {
   this.gameData.date = data["day"].substring(0,10);
 }
 
+Game.prototype.tick = function () {
+    var now = new Date().getTime();
+    var duration = now - (this.lastTime || now);
+    this.lastTime = now;
+    var delta = duration / IDEAL_TICK_DURATION;
 
+    this.framesThisSecond = ~~this.framesThisSecond + 1;
+    this.progressThisSecond = (this.progressThisSecond || 0) + delta;
 
-Game.prototype.tick = function() {
+    if (this.progressThisSecond > IDEAL_TPS) {
+        this.fps = this.framesThisSecond;
+        this.framesThisSecond = 0;
+        this.progressThisSecond = 0;
+        this.secondsActive = (this.secondsActive || 0) + 1;
 
+        console.log('FPS:', this.fps);
+    }
 
+    if (this.secondsActive % 10 === 0) {
+        if (!this.doneThisSecond) {
+            // occurs once every ten seconds - will be used for chatting to server/advancing date, etc
+
+            var currentDate = new Date(this.gameData.date);
+            var currentDay = currentDate.getDay();
+            console.log(currentDate.getDay());
+            this.doneThisSecond = true;
+        }
+    } else {
+        this.doneThisSecond = false;
+    }
+
+    requestAnimationFrame(this.tick.bind(this));
 }
 
 Game.prototype.initPlayer = function() {

@@ -39,19 +39,19 @@
         <h3>Your Balance: </h3><h4 rv-text="yourCard.balance"></h4>
         <h3>Shares: </h3><h4 rv-text="yourCard.shares"></h4>
         <h3>Share Price: </h3><h4 rv-text="yourCard.sharePrice"></h4>
-        <div id="portfolio">
+        <div id="portfolio1">
           <h3>Your Portfolio</h3>
-          <ul rv-each-portfoli = "companies">
-            <li rv-text="portfoli.id"></li>
-            <li rv-text="portfoli.stockAvailable"></li>
+          <ul class="portfolio">
+            <li rv-each-tag="companies.companies" rv-text="tag.name"></li>
+            <!--<li rv-text="portfoli.stockAvailable"></li>
             <li rv-text="portfoli.worth"></li>
             <input placeholder="Amount to sell"></input>
-            <button rv-on-click="portfoli.sell"></button>
+            <button rv-on-click="portfoli.sell"></button>-->
           </ul>
         </div>
       </div>
     </section>
-    <div id="valueGraph"></div>
-    <div id="stats">Stats</div>
+    <!--<div id="valueGraph"></div>
+    <div id="stats">Stats</div>-->
   </section>
 </section>
