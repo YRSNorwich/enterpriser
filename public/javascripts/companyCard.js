@@ -15,12 +15,12 @@ companyCard.prototype.getData = function(callback) {
     if( this.view ) {
         this.view.unbind();
 
-        jQuery.getJSON(("/ajax/stock/"+this.id+"/"+game.dateTo36(game.gameData.date)), function(data){
+        jQuery.getJSON(("/ajax/stock/"+this.id+"/"+game.dateTo36(game.gameData.day)), function(data){
             callback(data);
         }.bind(this))
     } else {
-        console.log(game.gameData.date, game.dateTo36(game.gameData.date)); //HOLY CRAP I BE STUPID
-        jQuery.getJSON(("/ajax/stock/"+this.id+"/"+game.dateTo36(game.gameData.date)), function(data){
+        console.log(game.gameData.day, game.dateTo36(game.gameData.day)); //HOLY CRAP I BE STUPID
+        jQuery.getJSON(("/ajax/stock/"+this.id+"/"+game.dateTo36(game.gameData.day)), function(data){
             callback(data);
         }.bind(this))
     }
@@ -40,6 +40,7 @@ companyCard.prototype.setData = function(data, callback) {
     this.stockPrice = data;
     if( typeof this.stockPrice === "object" ) this.stockPrice = "Stock Not available";
         var cardObject = { name: this.name["label"], code: this.id, available: !this.stockAvailable, stockprice: "Stock Price: " + this.stockPrice, stockavailable: this.stockAvailable };
+        this.companyCard = cardObject;
         callback(cardObject);
     };
 

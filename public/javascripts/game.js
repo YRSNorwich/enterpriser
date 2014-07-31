@@ -18,7 +18,7 @@ function Game(id) {
     shares: 1000,
     sharePrice: (this.balance / this.shares),
     bought: {},
-    date: this.dateTo36(this.time)
+    day: this.dateTo36(this.time)
   }
 
   this.portCard = {
@@ -39,11 +39,12 @@ Game.prototype.dateTo36 = function(str) {
 Game.prototype.init = function(id) {
 
   this.getData(id, function(data) {
+
       this.setGameData(data);
-      this.setPortData(data, "GOOG");
+      this.rawData = data;
+      this.setPortData(game.gameData, "GOOGL");
       this.setBind(this.gameData, jQuery(".yourCard"), function(res) {
         this.setPortfolio([data], jQuery("#portfolio"), function(e) {
-
           game.tick();
         });
       }.bind(this));
@@ -55,26 +56,28 @@ Game.prototype.init = function(id) {
 
 Game.prototype.setBind = function(data, element, callback) {
   this.view = rivets.bind(element, { yourCard: this.gameData });
+  this.portView = rivets.bind(jQuery(".portfolio"), { portdata : this.portCard });
   callback();
 }
 
 Game.prototype.setPortfolio = function(data, element, callback) {
   var bought = data[0]["bought"];
   for(var i in bought) {
-    var buildItem = jQuery("<li><a class='portfolioSelect' href='"+i+"'>  Company: " + i + " " + "Stock Owned: " + bought[i] + "</a></li>");
-    jQuery('#portlist').append(buildItem);
+    if( bought.length ) {
+        element.append(jQuery("<li>No stocks owned yet!</li>"));
+    } else {
+      var buildItem = jQuery("<li><a class='portfolioSelect' href='"+i+"'>  Company: " + i + " " + "Stock Owned: " + bought[i] + "</a></li>");
+      jQuery('#portlist').append(buildItem);
+    }
+
   }
   callback();
 }
 
 jQuery("body").on("click", ".portfolioSelect", function(e){
-
-
-
   var id = jQuery(this).attr("href");
   e.preventDefault();
   game.setPortData(game.gameData, id)
-
 });
 
 Game.prototype.setPortData = function(data1, i) {
@@ -91,7 +94,7 @@ Game.prototype.setPortData = function(data1, i) {
       this.portCard.shares = amount;
       this.portCard.price = dataPrice;
       this.portCard.balVal = (amount*dataPrice);
-      rivets.bind(jQuery(".portfolio"), { portdata : this.portCard });
+
     }.bind(this))
 
 
@@ -105,11 +108,12 @@ Game.prototype.setGameData = function(data) {
     this.gameData.shares = data["shares"];
     this.gameData.sharePrice = (this.gameData.balance/this.gameData.shares);
     (data["bought"]) ? this.gameData.bought = data["bought"] : false;
-    this.gameData.date = data["day"].substring(0,10);
-    }
+    this.gameData.day = data["day"].substring(0,10);
+    console.log("Data Set");
+}
 
 Game.prototype.getDataForCompany = function(id, callback) {
-  jQuery.getJSON(("/ajax/stock/"+id+"/"+this.dateTo36(this.gameData.date)), function(data){
+  jQuery.getJSON(("/ajax/stock/"+id+"/"+this.dateTo36(this.gameData.day)), function(data){
     callback(data,id);
   }.bind(this))
 
@@ -120,6 +124,7 @@ Game.prototype.getDataForCompany = function(id, callback) {
 Game.prototype.getData = function(id, callback) {
 
   jQuery.getJSON((this.ajaxReq+"/"+id), function(data){
+    this.setGameData(data);
     jQuery.getJSON(("/ajax/list/"), function(data1){
       callback(data, data1);
       this.rawData = data1;
@@ -128,6 +133,9 @@ Game.prototype.getData = function(id, callback) {
 
 };
 
+Game.prototype.updateAll = function(id) {
+
+}
 
 
 Game.prototype.tick = function () {
@@ -145,18 +153,38 @@ Game.prototype.tick = function () {
         this.progressThisSecond = 0;
         this.secondsActive = (this.secondsActive || 0) + 1;
 
-        console.log('FPS:', this.fps);
+        //console.log('FPS:', this.fps);
     }
 
     window.renderTowers();
 
     if (this.secondsActive % 10 === 0) {
         if (!this.doneThisSecond) {
-            // occurs once every ten seconds - will be used for chatting to server/advancing date, etc
+          var tempDate = new Date(this.gameData.day);
+          tempDate.setDate(tempDate.getDate() + 1);
+          this.gameData.day = new Date(tempDate.toUTCString());
+          
+          console.log(this.gameData.day);
 
-            var currentDate = new Date(this.gameData.date);
-            var currentDay = currentDate.getDay();
-            console.log(currentDate.getDay());
+          jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
+
+            this.getData(this.sessionId, function(data) {
+              this.setGameData(data);
+
+                this.setPortData(game.gameData, this.portCard.id);
+                
+            
+
+            }.bind(this));
+
+          }.bind(this)); //Push da order to da server;
+
+         this.getDataForCompany(this.companyCard.companyCard.code, function(data) {
+           console.log(data);
+           this.companyCard.stockPrice = data;
+           this.companyCard.companyCard.stockprice = "Stock Price: " + data;
+         }.bind(this))
+
             this.doneThisSecond = true;
         }
     } else {
@@ -164,8 +192,4 @@ Game.prototype.tick = function () {
     }
 
     requestAnimationFrame(this.tick.bind(this));
-}
-
-Game.prototype.initPlayer = function() {
-
 }
