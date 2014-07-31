@@ -1,8 +1,10 @@
-function Game() {
+function Game(id) {
   this.time = "3/1/2004";
-  this.sessionId;
-  this.ajaxReq = "http://127.0.0.1:3000/ajax/game"
+  this.sessionId = id;
+  this.ajaxReq = "/ajax/game"
   this.currentCompanyCard;
+  this.companyData;
+  this.companies = [];
   this.gameData = {
     companyName: null,
     companyId: null,
@@ -21,25 +23,60 @@ Game.prototype.dateTo36 = function(str) {
 }
 //ID = NON LITERAL EG: 1!!!!
 Game.prototype.init = function(id) {
+
+
+
   this.getData(id, function(data) {
-
-      this.setGameData(data)
+      console.log(data, this.gameData);
+      this.setGameData(data);
       this.setBind(this.gameData, jQuery(".yourCard"), function(res) {
-
+        this.setPortfolio();
       });
 
 
   }.bind(this));
+
 }
 
 Game.prototype.setBind = function(data, element, callback) {
   this.view = rivets.bind(element, { yourCard: this.gameData });
+  callback();
+}
+
+Game.prototype.setPortfolio = function(callback) {
+  var data = this.rawData;
+
+  var total = [];
+    for(var i in data.bought) {
+      var buildEntry = {id: i, stockAvailable: data.bought[i]}
+      var databought = data.bought[i];
+      this.getDataForCompany(i, function(data) {
+        buildEntry.worth = data*databought;
+        total.push(buildEntry);
+        callback(total);
+
+      }.bind(this));
+      //worth *= data.bought[i];
+
+
+    }
+
+
+}
+
+Game.prototype.getDataForCompany = function(id, callback) {
+  jQuery.getJSON(("/ajax/stock/"+id+"/"+this.dateTo36(this.gameData.date)), function(data){
+    callback(data);
+  }.bind(this))
 }
 
 
 Game.prototype.getData = function(id, callback) {
   jQuery.getJSON((this.ajaxReq+"/"+id), function(data){
-    callback(data);
+    jQuery.getJSON(("/ajax/list/"), function(data1){
+      callback(data);
+      this.rawData = data1;
+    }.bind(this))
   }.bind(this));
 };
 

@@ -6,6 +6,8 @@ function companyCard(name, id) {
   this.stockAvailable = null;
   this.view = null;
   this.companyCard = {};
+
+  this.rawData = null;
 }
 //Gets the card and bind data from the api
 companyCard.prototype.getData = function(callback) {
@@ -63,13 +65,15 @@ jQuery("#placeOrder").on("click", function(e) {
 
 //Places an order for stock: sends a POST request to the api to set the user's owned stock in this company to x amount.
 companyCard.prototype.placeOrder = function(stockId, amount, price) {
-  console.log(this.companyCard.stockavailable);
+
   var orderPrice = (amount*price);
   if(game.gameData.balance >= orderPrice && (this.companyCard.stockavailable-amount) > 0) {
     game.gameData.bought[stockId] = ~~game.gameData.bought[stockId] + amount; //AMAZING
     this.calculateStock(); //Calculates new stock price
     game.gameData.balance -= orderPrice;//Minus from da balance
+
     console.log(" User: "+ game.sessionId + " Bought stock in: " + stockId + " Amount: " + amount); //Validate order
+    
     jQuery.post("/ajax/game/"+game.sessionId, game.gameData, function(data, err){
       console.log(data);
       console.log(err);

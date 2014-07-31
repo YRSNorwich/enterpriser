@@ -9,13 +9,19 @@
 
 
       window.game = new Game(gameId);
-      game.companyCard = null;
+      //Init with company card AAPL
+
+
       game.sliderValue;
       if(gameId){
         game.init(gameId);
       } else {
         game.init(0);
       }
+
+
+
+
 
       //Slider
       $(".slider").slider({

@@ -93,7 +93,7 @@ function csvGrabberTest(string) {
               var newQuery = Yahoo.buildQuery(company, "2000");
               Yahoo.executeQuery(newQuery, function(data) {
                 var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
-                  var doptions = { name: "./res/temp/" + company + ".json", query: newQuery, result: json };
+                  var doptions = { name: "./res/" + company + ".json", query: newQuery, result: json };
                   //Doptions: Data and options! Combined!!
                   Yahoo.writeOut(doptions, function(status) {
                     console.log(status);
