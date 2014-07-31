@@ -78,7 +78,7 @@ app.post('/game/new', gameRoutes.newGame);
 
 //Testing Yahoo Module
 //test();
-//csvGrabberTest("./companies.csv");
+//csvGrabberTest("../data/companies.csv");
 //Got up to entry 136
 function csvGrabberTest(string) {
 
