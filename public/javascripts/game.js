@@ -156,7 +156,28 @@ Game.prototype.tick = function () {
         //console.log('FPS:', this.fps);
     }
 
-    window.renderTowers();
+    // if ready to render
+    // TODO fix change in order glitch
+    if (this.gameData.companyId !== null)
+    {
+        var toRender = {};
+
+        // TODO replace with valuation; need to write lib script for this
+        toRender[this.gameData.companyId] = this.gameData.shares;
+
+        // TODO maybe we should render stock prices instead? Although this will be graphed...
+        for (var investedStockName in this.gameData.bought)
+        {
+            toRender[investedStockName] = this.gameData.bought[investedStockName];
+        }
+
+        window.renderTowers(toRender);
+    }
+    else
+    {
+        // play safe
+        window.renderTowers({});
+    }
 
     // test line window.renderTowers({'FRAN': 4, 'GOOG': 2, 'AAPL': 3, 'MICR': 3.25, 'SANF': 3.1111, 'EEJ': 2, 'MJIC': 1.2});
 
