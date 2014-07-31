@@ -69,16 +69,18 @@ Game.prototype.setPortfolio = function(data, element, callback) {
 
 jQuery("body").on("click", ".portfolioSelect", function(e){
 
-  e.preventDefault();
-  var id = jQuery(this).attr("href");
-  //game.setPortData(this.gameData["bought"], id)
 
-}.bind(this));
+
+  var id = jQuery(this).attr("href");
+  e.preventDefault();
+  game.setPortData(game.gameData, id)
+
+});
 
 Game.prototype.setPortData = function(data1, i) {
-  //for(var i in data1["bought"]) {
 
     this.getDataForCompany(i, function(data, id) {
+
       var compId = id;
       var compName = this.rawData[id]["name"];
       var dataPrice = data;
@@ -88,14 +90,11 @@ Game.prototype.setPortData = function(data1, i) {
       this.portCard.id = compId;
       this.portCard.shares = amount;
       this.portCard.price = dataPrice;
-
-      //console.log(id, this.rawData[id]["name"], data, data1["bought"][id]);
+      this.portCard.balVal = (amount*dataPrice);
+      rivets.bind(jQuery(".portfolio"), { portdata : this.portCard });
     }.bind(this))
 
 
-  //}
-
-  //var dataForCompany =
 
 }
 
@@ -122,7 +121,7 @@ Game.prototype.getData = function(id, callback) {
 
   jQuery.getJSON((this.ajaxReq+"/"+id), function(data){
     jQuery.getJSON(("/ajax/list/"), function(data1){
-      callback(data);
+      callback(data, data1);
       this.rawData = data1;
     }.bind(this))
   }.bind(this));

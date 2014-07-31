@@ -45,14 +45,18 @@
 			<div id="portfolio">
 				<h3>Your Portfolio</h3>
         <ul id="portlist">
-          <li>APPLE</li>
         </ul>
 				<ul class="portfolio">
 					<li rv-text="portdata.name"></li>
-					<li rv-text="portdata.stockAvailable"></li>
-					<li rv-text="portdata.worth"></li>
-					<input placeholder="Amount to sell"></input>
-					<button rv-on-click="portfoli.sell"></button>-->
+					<li rv-text="portdata.id"></li>
+					<li rv-text="portdata.shares"></li>
+					<li rv-text="portdata.price"></li>
+					<li rv-text="portdata.balVal"></li>
+					<hr/>
+					<h3>Sell your stocks in this company</h3>
+						<input placeholder="Amount to sell"></input>
+						<button rv-on-click="portfoli.sell"></button>
+
 				</ul>
 			</div>
 		</div>
