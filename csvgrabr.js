@@ -1,10 +1,10 @@
 //Imports
-var Parser = require('babyparse'),
-	fs = require('fs'),
-	http = require("http");
+var Parser = require('babyparse');
+var fs = require('fs');
+var http = require("http");
 //--
 
-function csvGrabber(config) { 
+function csvGrabber(config) {
 	this.config = config;
 	this.parser = new Parser( this.config );
 }
@@ -23,12 +23,12 @@ csvGrabber.prototype.loadFile = function(fileName, config, strip, callback) {
 csvGrabber.prototype.writeFile = function(options, callback) {
 	if( options.name ) {
 		fs.writeFile(options.name, options.result, function(err) {
-    		callback((err) ? console.log( err ) : console.log("Success!"));
-  		});
+			callback((err) ? console.log( err ) : console.log("Success!"));
+		});
 	} else {
 		fs.writeFile(options.query.stock.substr(3), options.result, function(err) {
-    		callback((err) ? console.log( err ) : console.log("Success!"));
-  		});
+			callback((err) ? console.log( err ) : console.log("Success!"));
+		});
 	}
 }
 
@@ -41,23 +41,23 @@ function jsonFile(config) {
 }
 
 jsonFile.prototype.setData = function(json, strip) {
-	
-	if( strip ) {
-    var parsed = this.parser.parse(json).results;
-  	
-  	for(i in parsed.fields) {
-  		for(var p = 0; p < strip.length; p++) {
-  			if (parsed.fields[i] == strip[p]) {
-  				delete parsed.fields.splice(i,1);
-  			}
-  		}
-  	}
 
-  	for(row in parsed["rows"]) {
-    	for(var i = 0; i < strip.length; i++) {
-      		delete parsed["rows"][row][strip[i]];
-    	}
-  	}
+	if( strip ) {
+		var parsed = this.parser.parse(json).results;
+
+		for(i in parsed.fields) {
+			for(var p = 0; p < strip.length; p++) {
+				if (parsed.fields[i] == strip[p]) {
+					delete parsed.fields.splice(i,1);
+				}
+			}
+		}
+
+		for(row in parsed["rows"]) {
+			for(var i = 0; i < strip.length; i++) {
+				delete parsed["rows"][row][strip[i]];
+			}
+		}
 		var jsonParsed = JSON.stringify(parsed);
 	} else {
 		var parsed = this.parser.parse(json).results;
@@ -69,13 +69,13 @@ jsonFile.prototype.setData = function(json, strip) {
 	this.jsonObject = JSON.parse(jsonParsed);
 
 }
-	
-jsonFile.prototype.deleteCol = function(index) {
 
+jsonFile.prototype.deleteCol = function(index) {
+	// TODO
 }
 
 jsonFile.prototype.deleteRow = function(index) {
-	
+	// TODO
 }
 
 
