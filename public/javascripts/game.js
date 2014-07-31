@@ -1,3 +1,6 @@
+var IDEAL_TPS = 60;
+var IDEAL_TICK_DURATION = 1000 / IDEAL_TPS;
+
 function Game() {
   this.time = "3/1/2004";
   this.sessionId;
@@ -55,11 +58,25 @@ Game.prototype.setGameData = function(data) {
   this.gameData.date = data["day"].substring(0,10);
 }
 
+Game.prototype.tick = function () {
+    var now = new Date().getTime();
+    var duration = now - (this.lastTime || now);
+    this.lastTime = now;
+    var delta = duration / IDEAL_TICK_DURATION;
 
+    this.framesThisSecond = ~~this.framesThisSecond + 1;
+    this.progressThisSecond = (this.progressThisSecond || 0) + delta;
 
-Game.prototype.tick = function() {
+    if (this.progressThisSecond > IDEAL_TPS)
+    {
+        this.fps = this.framesThisSecond;
+        this.framesThisSecond = 0;
+        this.progressThisSecond = 0;
 
+        console.log('FPS:', this.fps);
+    }
 
+    requestAnimationFrame(this.tick.bind(this));
 }
 
 Game.prototype.initPlayer = function() {
