@@ -57,7 +57,7 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
-        done(err, user);
+	   done(err, user);
     });
 });
 
@@ -85,26 +85,26 @@ function csvGrabberTest(string) {
     var grabber = new csvGrabber();
     var file;
     grabber.loadFile(string, babyParseConfig, ["LastSale", "MarketCap", "ADR TSO", "IPOyear", "Sector", "Summary Quote", "Volume"], function(jsonFile) {
-        for(var i in jsonFile.jsonObject["rows"]) {
-            (function(i) {
-                setTimeout(function() {
-                    var Yahoo = new yahoo(babyParseConfig);
-                    var company = jsonFile.jsonObject["rows"][i]["Symbol"];
-                    var newQuery = Yahoo.buildQuery(company, "2000");
-                    Yahoo.executeQuery(newQuery, function(data) {
-                        var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
-                        var doptions = { name: "./res/temp/" + company + ".json", query: newQuery, result: json };
-                        //Doptions: Data and options! Combined!!
-                        Yahoo.writeOut(doptions, function(status) {
-                            console.log(status);
-                        });
-                    });
-                    console.log(i);
+	   for(var i in jsonFile.jsonObject["rows"]) {
+		  (function(i) {
+			 setTimeout(function() {
+				var Yahoo = new yahoo(babyParseConfig);
+				var company = jsonFile.jsonObject["rows"][i]["Symbol"];
+				var newQuery = Yahoo.buildQuery(company, "2000");
+				Yahoo.executeQuery(newQuery, function(data) {
+				    var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
+				    var doptions = { name: "./res/temp/" + company + ".json", query: newQuery, result: json };
+				    //Doptions: Data and options! Combined!!
+				    Yahoo.writeOut(doptions, function(status) {
+					   console.log(status);
+				    });
+				});
+				console.log(i);
 
-                }, 5000 * i);
-            })(i);
+			 }, 5000 * i);
+		  })(i);
 
-        }
+	   }
 
     });
 
