@@ -65,22 +65,6 @@ Game.prototype.setPortfolio = function(data, element, callback) {
 
 
   callback(companies);
-/*
-  var total = [];
-    for(var i in data.bought) {
-      var buildEntry = {id: i, stockAvailable: data.bought[i]}
-      var databought = data.bought[i];
-      this.getDataForCompany(i, function(data) {
-        buildEntry.worth = data*databought;
-        total.push(buildEntry);
-        callback(total);
-
-      }.bind(this));
-      //worth *= data.bought[i];
-
-
-    }*/
-
 
 }
 
