@@ -9,10 +9,18 @@
 				<% include gamemenu %>
 			<% } %>
 		<% } else { %>
-			<h1>Login</h1>
-			<% include login %>
-			<h1>Register</h1>
-			<% include register %>
+			<div class="single-column">
+				<h1>Enterpriser</h1>
+				<marquee>
+					<span>Growth in Britain's economy as youth learn with Enterpriser</span>
+					<span>Man sues beach after not hearing sea in shell<span>
+				</marquee>
+				<h2>Trade...</h2>
+				<% include login %>
+				<hr>
+				<h2>Register</h2>
+				<% include register %>
+			</div>
 		<% } %>
 	</section>
 	<script src="javascripts/game.js"></script>

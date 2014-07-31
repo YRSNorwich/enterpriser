@@ -1,0 +1,40 @@
+body
+{
+	margin: 0;
+	padding: 0;
+}
+
+.playView
+{
+	#left
+	{
+		-webkit-flex: 1;
+		flex: 1;
+	}
+
+	#companyGraphic
+	{
+		-webkit-flex: 3;
+		flex: 3;
+	}
+
+	#right
+	{
+		-webkit-flex: 1;
+		flex: 1;
+	}
+
+	#left, #right
+	{
+		background-color: #fff1e0;
+		padding: 2em;
+	}
+
+	:root {
+		background-color: blue;
+	}
+
+
+	display: -webkit-flex;
+	display: flex;
+}

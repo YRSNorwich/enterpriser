@@ -1,11 +1,18 @@
-<section class="gameMenu">
-    <% for (var gameIndex = 0; gameIndex < games.length; gameIndex++) { %>
-        <a href="/?gameId=<%= gameIndex %>">
-            <p><strong><%= games[gameIndex].companyName %></strong> Corporations</p>
-        </a>
+<section class="gameMenu single-column">
+    <h1>Enterpriser</h1>
+    <h2>Your Companies:</h2>
+    <% if (games.length > 0) { %>
+        <% for (var gameIndex = 0; gameIndex < games.length; gameIndex++) { %>
+            <a href="/?gameId=<%= gameIndex %>">
+                <p class="corporation-li"><strong><%= games[gameIndex].companyName %></strong> Corporations</p>
+            </a>
+        <% } %>
+    <% } else { %>
+        <p>You haven't made any games!</p>
     <% } %>
+    <hr>
     <form action="/game/new" method="post">
-        <input type="text" name="companyName"></input> Corporations
+        <input style="width:50%" type="text" name="companyName"></input> <span style="float:right;font-size:1.5em">Corporations</span>
         <p>
             <input type="submit" value="Create Game..."></input>
         </p>

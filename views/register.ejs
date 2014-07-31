@@ -1,9 +1,12 @@
 <body>
-	<%= typeof registrationError === "undefined" ? "" : registrationError %>
+	<p class="urgent"><%= typeof registrationError === "undefined" ? "" : registrationError %></p>
 	<form action="/register" method="post">
+		<h4>Your Name:</h4>
 		<input type="text" name="username"></input>
+		<h4>Your Email:</h4>
 		<input type="text" name="email"></input>
-		<input type="pass" name="password"></input>
-		<input type="submit" value="Submit">
+		<h4>Your Password:</h4>
+		<input type="password" name="password"></input>
+		<input type="submit" value="Enter"></input>
 	</form>
 </body>

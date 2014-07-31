@@ -1,8 +1,10 @@
 <body>
-	<%= typeof loginError === "undefined" ? "" : loginError %>
+	<p class="urgent"><%= typeof loginError === "undefined" ? "" : loginError %></p>
 	<form action="/login" method="post">
+		<h4>Your Name:</h4>
 		<input type="text" name="username"></input>
-		<input type="pass" name="password"></input>
-		<input type="submit" value="Submit">
+		<h4>Your Passphrase:</h4>
+		<input type="password" name="password"></input>
+		<input type="submit" value="Enter"></input>
 	</form>
 </body>
