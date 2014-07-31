@@ -154,7 +154,7 @@
         backgroundTowersCanvas.getContext('2d').clearRect(0, 0, backgroundTowersCanvas.width, backgroundTowersCanvas.height);
 
         // render ground
-        canvasTowers.add(Isomer.Shape.Prism(Isomer.Point.ORIGIN, 8, 8, 1), greenColor);
+        canvasTowers.add(Isomer.Shape.Prism(Isomer.Point.ORIGIN, 9, 9, 1), greenColor);
 
         // TODO render towers
 
