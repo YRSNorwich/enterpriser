@@ -6,10 +6,47 @@ body
 
 .playView
 {
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	height: 100%;
+	width: 100%;
+
+	//min-height: 700px;
+	//max-width: 800px;
 	#left
 	{
 		-webkit-flex: 1;
 		flex: 1;
+
+		#info
+		{
+			#name, #code
+			{
+				text-align: center;
+			}
+		}
+
+		#amount
+		{
+			font-style: italic;
+
+			ul
+			{
+				list-style: none;
+			}
+		}
+
+		#placeOrder
+		{
+			display: block;
+			width: 50%;
+			padding: 0.25em;
+			margin: auto;
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
+		}
 	}
 
 	#companyGraphic
@@ -26,15 +63,26 @@ body
 
 	#left, #right
 	{
+
+		position: relative;
 		background-color: #fff1e0;
 		padding: 2em;
-	}
 
-	:root {
-		background-color: blue;
+		overflow-x: hidden;
+		overflow-y: auto;
 	}
-
 
 	display: -webkit-flex;
 	display: flex;
+}
+
+#backgroundTowers
+{
+	z-index: -1;
+	position: fixed;
+
+	width: 100%;
+	height: 100%;
+
+	background-color: #D8EDF2;
 }
