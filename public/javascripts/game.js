@@ -18,7 +18,7 @@ function Game(id) {
     shares: 1000,
     sharePrice: (this.balance / this.shares),
     bought: {},
-    date: this.dateTo36(this.time)
+    day: this.dateTo36(this.time)
   }
 
   this.portCard = {
@@ -105,11 +105,11 @@ Game.prototype.setGameData = function(data) {
     this.gameData.shares = data["shares"];
     this.gameData.sharePrice = (this.gameData.balance/this.gameData.shares);
     (data["bought"]) ? this.gameData.bought = data["bought"] : false;
-    this.gameData.date = data["day"].substring(0,10);
+    this.gameData.day = data["day"].substring(0,10);
     }
 
 Game.prototype.getDataForCompany = function(id, callback) {
-  jQuery.getJSON(("/ajax/stock/"+id+"/"+this.dateTo36(this.gameData.date)), function(data){
+  jQuery.getJSON(("/ajax/stock/"+id+"/"+this.dateTo36(this.gameData.day)), function(data){
     callback(data,id);
   }.bind(this))
 
@@ -152,12 +152,25 @@ Game.prototype.tick = function () {
 
     if (this.secondsActive % 10 === 0) {
         if (!this.doneThisSecond) {
-            // occurs once every ten seconds - will be used for chatting to server/advancing date, etc
+          var tempDate = new Date(this.gameData.day);
+          tempDate.setDate(tempDate.getDate() + 1);
+          this.gameData.day = tempDate.toISOString().substring(0, 10);
+          console.log(this.gameData.day);
+          jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
+              console.log(data);
+              console.log(err);
+          }); //Push da order to da server;
 
+          this.getData(3, function(data) {
+            this.setGameData(data);
+          }.bind(this));
+            // occurs once every ten seconds - will be used for chatting to server/advancing date, etc
+            /*
             var currentDate = new Date(this.gameData.date);
             var currentDay = currentDate.getDay();
-            console.log(currentDate.getDay());
+            console.log(currentDate.getDay());*/
             this.doneThisSecond = true;
+
         }
     } else {
         this.doneThisSecond = false;
