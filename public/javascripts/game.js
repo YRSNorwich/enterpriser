@@ -156,14 +156,67 @@ Game.prototype.tick = function () {
         //console.log('FPS:', this.fps);
     }
 
-    window.renderTowers();
+    // if ready to render
+    // TODO fix change in order glitch
+    if (this.gameData.companyId !== null)
+    {
+        var stockNames = Object.keys(this.gameData.bought);
+        var highestStockNames = [];
+
+        // only keep 4 most owned
+        for (var i = 0; i < 4; i++)
+        {
+            var highestStockIndex = null;
+            var highestStockAmount = -Infinity;
+
+            for (var stockNameIndex in stockNames)
+            {
+                var stockName = stockNames[stockNameIndex];
+
+                if (stockName === this.gameData.companyId)
+                {
+                    continue;
+                }
+
+                if (this.gameData.bought[stockName] > highestStockAmount)
+                {
+                    highestStockIndex = stockNameIndex;
+                    highestStockAmount = this.gameData.bought[stockName];
+                }
+            }
+
+            if (highestStockIndex !== null)
+            {
+                highestStockNames.push(stockNames[highestStockIndex]);
+                stockNames.splice(highestStockIndex, 1);
+            }
+        }
+
+        var toRender = {};
+        toRender[this.gameData.companyId] = this.gameData.shares;
+
+        for (var stockNameIndex in highestStockNames)
+        {
+            var stockName = highestStockNames[stockNameIndex];
+            toRender[stockName] = this.gameData.bought[stockName];
+        }
+
+        window.renderTowers(toRender);
+    }
+    else
+    {
+        // play safe
+        window.renderTowers({});
+    }
+
+    // test line window.renderTowers({'FRAN': 4, 'GOOG': 2, 'AAPL': 3, 'MICR': 3.25, 'SANF': 3.1111, 'EEJ': 2, 'MJIC': 1.2});
 
     if (this.secondsActive % 10 === 0) {
         if (!this.doneThisSecond) {
           var tempDate = new Date(this.gameData.day);
           tempDate.setDate(tempDate.getDate() + 1);
           this.gameData.day = new Date(tempDate.toUTCString());
-          
+
           console.log(this.gameData.day);
 
           jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
@@ -172,8 +225,8 @@ Game.prototype.tick = function () {
               this.setGameData(data);
 
                 this.setPortData(game.gameData, this.portCard.id);
-                
-            
+
+
 
             }.bind(this));
 

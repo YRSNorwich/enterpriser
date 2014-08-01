@@ -40,6 +40,7 @@ companyCard.prototype.setData = function(data, callback) {
     this.stockPrice = data;
     if( typeof this.stockPrice === "object" ) this.stockPrice = "Stock Not available";
         var cardObject = { name: this.name["label"], code: this.id, available: !this.stockAvailable, stockprice: "Stock Price: " + this.stockPrice, stockavailable: this.stockAvailable };
+        jQuery('#amountShares').slider({ max: cardObject.stockavailable });
         this.companyCard = cardObject;
         callback(cardObject);
     };
@@ -49,8 +50,8 @@ companyCard.prototype.setData = function(data, callback) {
         var boughtData = game.gameData.bought;
         for(var i in boughtData) {
             if(this.id === i) {
-                this.companyCard.stockavailable -= boughtData[i];
-                jQuery(".slider").max = this.companyCard.stockavailable;
+                this.companyCard.stockavailable = 1000 - boughtData[i];
+                jQuery("#amountShares").slider({ max: this.companyCard.stockavailable });
             }
         }
     };
@@ -68,7 +69,7 @@ companyCard.prototype.setData = function(data, callback) {
     companyCard.prototype.placeOrder = function(stockId, amount, price) {
         console.log(this.companyCard.stockavailable);
         var orderPrice = (amount*price);
-        if(game.gameData.balance >= orderPrice && (this.companyCard.stockavailable-amount) > 0) {
+        if(game.gameData.balance >= orderPrice && (this.companyCard.stockavailable-amount) >= 0) {
             game.gameData.bought[stockId] = ~~game.gameData.bought[stockId] + amount; //AMAZING
             this.calculateStock(); //Calculates new stock price
             game.gameData.balance -= orderPrice;//Minus from da balance
