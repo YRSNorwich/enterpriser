@@ -214,8 +214,8 @@ Game.prototype.tick = function () {
     if (this.secondsActive % 10 === 0) {
         if (!this.doneThisSecond) {
           var tempDate = new Date(this.gameData.day);
-          tempDate.setDate(tempDate.getDate() + 1);
-          this.gameData.day = new Date(tempDate.toUTCString());
+          tempDate.setUTCDate(tempDate.getUTCDate() + 1);
+          this.gameData.day = new Date(tempDate.toISOString());
 
           console.log(this.gameData.day);
 
