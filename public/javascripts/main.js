@@ -160,7 +160,7 @@
     var canvasTowers = new Isomer(backgroundTowersCanvas);
     var greenColor = new Color(149, 195, 63);
 
-    var positions = [[1, 1], [4, 1], [1, 4], [7, 1], [1, 7], [7, 4], [4, 7], [7, 7]];
+    var positions = [[1, 1], [4, 1], [1, 4], [7, 1], [1, 7]]; //, [7, 4], [4, 7], [7, 7]];
 
     // convert co-ords to Point objects
     for (var positionsIndex in positions)
@@ -169,7 +169,7 @@
         positions[positionsIndex] = new Point(value[0], value[1], 1);
     }
 
-    var colors    = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [255, 255, 0], [0, 255, 255], [255, 0, 255], [128, 0, 255], [255, 128, 0]];
+    var colors    = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [255, 255, 0], [0, 255, 255]]; //, [255, 0, 255], [128, 0, 255], [255, 128, 0]];
     //  colors    = [red,         green,       blue,        yellow,        cyan,        , pink,          purple       , orange       ];
 
     // convert RGBs to Color Objects
@@ -177,6 +177,39 @@
     {
         var value = colors[colorIndex];
         colors[colorIndex] = new Color(value[0], value[1], value[2]);
+    }
+
+    var cachedIndexes = {};
+
+    window.getTowerIndex = function(stockId)
+    {
+        var foundIndexes = [];
+        for (var index in cachedIndexes)
+        {
+            if (cachedIndexes[index] === stockId)
+            {
+                return index;
+            }
+
+            foundIndexes.push(index);
+        }
+
+        for (var i = 0; i < positions.length; i++)
+        {
+            if (!(i in cachedIndexes))
+            {
+                // create, it's free, there is nothing there
+                cachedIndexes[i] = stockId;
+                return i;
+            }
+        }
+
+        throw new Error('Trying to cache more than the top 5, Harry shouldn\'t have ever let this happen :O');
+    }
+
+    window.getTowerColor = function(stockId)
+    {
+        return colors[window.getTowerIndex(stockId)];
     }
 
     /**
@@ -204,8 +237,16 @@
             maxHeight = Math.max(maxHeight, towers[towerName]);
         }
 
+        // remove no-longer needed stock IDs from cache
+        for (var index in cachedIndexes)
+        {
+            if (!(cachedIndexes[index] in towers))
+            {
+                delete cachedIndexes[index];
+            }
+        }
+
         // TODO resolve rendering glitch where further towers draw over closer ones; it's all about the order
-        var index = 0;
         for (var towerName in towers)
         {
             var value = towers[towerName];
@@ -217,14 +258,8 @@
                 continue;
             }
 
-            if (index >= positions.length) // out of room :(
-            {
-                continue;
-            }
-
+            var index = window.getTowerIndex(towerName);
             canvasTowers.add(Prism(positions[index], 1, 1, height), colors[index]);
-
-            index++;
 
             // TODO render windows; we want to know that they're buildings!
         }

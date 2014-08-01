@@ -219,15 +219,45 @@ Game.prototype.tick = function () {
     // TODO fix change in order glitch
     if (this.gameData.companyId !== null)
     {
-        var toRender = {};
+        var stockNames = Object.keys(this.gameData.bought);
+        var highestStockNames = [];
 
-        // TODO replace with valuation; need to write lib script for this
+        // only keep 4 most owned
+        for (var i = 0; i < 4; i++)
+        {
+            var highestStockIndex = null;
+            var highestStockAmount = -Infinity;
+
+            for (var stockNameIndex in stockNames)
+            {
+                var stockName = stockNames[stockNameIndex];
+
+                if (stockName === this.gameData.companyId)
+                {
+                    continue;
+                }
+
+                if (this.gameData.bought[stockName] > highestStockAmount)
+                {
+                    highestStockIndex = stockNameIndex;
+                    highestStockAmount = this.gameData.bought[stockName];
+                }
+            }
+
+            if (highestStockIndex !== null)
+            {
+                highestStockNames.push(stockNames[highestStockIndex]);
+                stockNames.splice(highestStockIndex, 1);
+            }
+        }
+
+        var toRender = {};
         toRender[this.gameData.companyId] = this.gameData.shares;
 
-        // TODO maybe we should render stock prices instead? Although this will be graphed...
-        for (var investedStockName in this.gameData.bought)
+        for (var stockNameIndex in highestStockNames)
         {
-            toRender[investedStockName] = this.gameData.bought[investedStockName];
+            var stockName = highestStockNames[stockNameIndex];
+            toRender[stockName] = this.gameData.bought[stockName];
         }
 
         window.renderTowers(toRender);
@@ -243,8 +273,8 @@ Game.prototype.tick = function () {
     if (this.secondsActive % 10 === 0) {
         if (!this.doneThisSecond) {
           var tempDate = new Date(this.gameData.day);
-          tempDate.setDate(tempDate.getDate() + 1);
-          this.gameData.day = new Date(tempDate.toUTCString());
+          tempDate.setUTCDate(tempDate.getUTCDate() + 1);
+          this.gameData.day = new Date(tempDate.toISOString());
 
              jQuery("#sellSlider").slider( { max: this.portCard.shares } );
           jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
