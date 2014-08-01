@@ -135,25 +135,42 @@ Game.prototype.getData = function(id, callback) {
 };
 
 Game.prototype.placeSell = function(id, amount, price) {
+  
   var sellValue = amount*price;
-  if(amount <= this.portCard.shares) {
+  
+  if( amount <= this.portCard.shares ) {
+
 
     this.gameData.bought[id] = ~~this.gameData.bought[id] - amount; //AMAZING
+    
     this.companyCard.calculateStock();
-    this.gameData.balance += sellValue;
-    if(amount === this.gameData.bought[id]) {
-      this.removeCompany(id);
-      console.log("TEST");
-    }
+
+
+    console.log(amount, this.portCard.shares);
+    
+
     jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
       console.log(data);
       console.log(err);
-    }); //Push da order to da server;
-    console.log(this.gameData.bought[id]);
-    this.setPortData(this.gameData, id);
+      this.gameData.balance += sellValue;
+      console.log(id);
+      this.setPortData(this.gameData, id);
+
+    }.bind(this)); //Push da order to da server;
+
+    if(amount === this.portCard.shares) {
+      this.removeCompany(id);
+    }
+    
     jQuery("#sellSlider").slider( { max: this.portCard.shares } );
+  
+
   } else {
+    
+
     alert("NO SALE");
+  
+
   }
 
 
@@ -161,17 +178,23 @@ Game.prototype.placeSell = function(id, amount, price) {
 
 jQuery("body").on("click", "#sellButton", function(e) {
   if(game.companyCard.stockPrice !== "Stock Not available") {
-    game.placeSell(game.portCard.id, game.sellSliderValue, game.companyCard.stockPrice);
+    game.placeSell(game.portCard.id, game.sellSliderValue, game.portCard.price);
   } else {
     alert("Cannot place order for stocks because at this time there is no stock data available for this company/it does not exist :D");
-  }
+ }
 
 });
 
 
 Game.prototype.removeCompany = function(id) {
-  console.log(this.gameData.bought)
   delete this.gameData.bought[id];
+  console.log("TURTLE SHIT")
+  this.setPortfolio([this.gameData], jQuery("#portfolio"), function(e) {
+
+
+
+  });
+ 
 }
 
 Game.prototype.tick = function () {
