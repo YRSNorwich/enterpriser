@@ -141,24 +141,118 @@
     $(window).on('resize', fitCanvasToWindow.bind(null, backgroundTowersCanvas));
     fitCanvasToWindow(backgroundTowersCanvas);
 
+    var Color = Isomer.Color;
+    var Prism = Isomer.Shape.Prism;
+    var Point = Isomer.Point;
+
     var canvasTowers = new Isomer(backgroundTowersCanvas);
-    var greenColor = new Isomer.Color(149, 195, 63);
+    var greenColor = new Color(149, 195, 63);
+
+    var positions = [[1, 1], [4, 1], [1, 4], [7, 1], [1, 7]]; //, [7, 4], [4, 7], [7, 7]];
+
+    // convert co-ords to Point objects
+    for (var positionsIndex in positions)
+    {
+        var value = positions[positionsIndex];
+        positions[positionsIndex] = new Point(value[0], value[1], 1);
+    }
+
+    var colors    = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [255, 255, 0], [0, 255, 255]]; //, [255, 0, 255], [128, 0, 255], [255, 128, 0]];
+    //  colors    = [red,         green,       blue,        yellow,        cyan,        , pink,          purple       , orange       ];
+
+    // convert RGBs to Color Objects
+    for (var colorIndex in colors)
+    {
+        var value = colors[colorIndex];
+        colors[colorIndex] = new Color(value[0], value[1], value[2]);
+    }
+
+    var cachedIndexes = {};
+
+    window.getTowerIndex = function(stockId)
+    {
+        var foundIndexes = [];
+        for (var index in cachedIndexes)
+        {
+            if (cachedIndexes[index] === stockId)
+            {
+                return index;
+            }
+
+            foundIndexes.push(index);
+        }
+
+        for (var i = 0; i < positions.length; i++)
+        {
+            if (!(i in cachedIndexes))
+            {
+                // create, it's free, there is nothing there
+                cachedIndexes[i] = stockId;
+                return i;
+            }
+        }
+
+        throw new Error('Trying to cache more than the top 5, Harry shouldn\'t have ever let this happen :O');
+    }
+
+    window.getTowerColor = function(stockId)
+    {
+        return colors[window.getTowerIndex(stockId)];
+    }
 
     /**
     * Render towers with Isomer to show visual proof.
     *
-    * @param {Object} towers - towers in JSON Object form { towerName: relativeHeight }
+    * @param {Object} towers - towers in JSON Object form { stockId: stockValue }
     */
     window.renderTowers = function(towers) {
         // clear screen
         backgroundTowersCanvas.getContext('2d').clearRect(0, 0, backgroundTowersCanvas.width, backgroundTowersCanvas.height);
 
         // render ground
-        canvasTowers.add(Isomer.Shape.Prism(Isomer.Point.ORIGIN, 8, 8, 1), greenColor);
+        canvasTowers.add(Isomer.Shape.Prism(Isomer.Point.ORIGIN, 9, 9, 1), greenColor);
 
-        // TODO render towers
+        // not ready to continue
+        if (window.game.gameData.companyId == null)
+        {
+            return;
+        }
 
-        // TODO render tower labels
+        // render towers
+        var maxHeight = 0;
+        for (var towerName in towers)
+        {
+            maxHeight = Math.max(maxHeight, towers[towerName]);
+        }
+
+        // remove no-longer needed stock IDs from cache
+        for (var index in cachedIndexes)
+        {
+            if (!(cachedIndexes[index] in towers))
+            {
+                delete cachedIndexes[index];
+            }
+        }
+
+        // TODO resolve rendering glitch where further towers draw over closer ones; it's all about the order
+        for (var towerName in towers)
+        {
+            var value = towers[towerName];
+            var height = (value / maxHeight) * 8;
+
+            if (towerName === window.game.gameData.companyId)
+            {
+                canvasTowers.add(Prism(new Point(3, 3, 1), 3, 3, height));
+                continue;
+            }
+
+            var index = window.getTowerIndex(towerName);
+            canvasTowers.add(Prism(positions[index], 1, 1, height), colors[index]);
+
+            // TODO render windows; we want to know that they're buildings!
+        }
+
+        // TODO render tower labels, maybe use a color key?
     }
 
     renderTowers({});
