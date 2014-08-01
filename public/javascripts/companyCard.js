@@ -51,6 +51,8 @@ companyCard.prototype.setData = function(data, callback) {
             if(this.id === i) {
                 this.companyCard.stockavailable -= boughtData[i];
                 jQuery(".slider").max = this.companyCard.stockavailable;
+                
+             
             }
         }
     };
@@ -64,11 +66,15 @@ companyCard.prototype.setData = function(data, callback) {
 
   });
 
+
+
+
+
+
     //Places an order for stock: sends a POST request to the api to set the user's owned stock in this company to x amount.
     companyCard.prototype.placeOrder = function(stockId, amount, price) {
-        console.log(this.companyCard.stockavailable);
         var orderPrice = (amount*price);
-        if(game.gameData.balance >= orderPrice && (this.companyCard.stockavailable-amount) > 0) {
+        if(game.gameData.balance > orderPrice && (this.companyCard.stockavailable-amount) > 0) {
             game.gameData.bought[stockId] = ~~game.gameData.bought[stockId] + amount; //AMAZING
             this.calculateStock(); //Calculates new stock price
             game.gameData.balance -= orderPrice;//Minus from da balance

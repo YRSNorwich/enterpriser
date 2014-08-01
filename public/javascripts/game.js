@@ -77,7 +77,8 @@ Game.prototype.setPortfolio = function(data, element, callback) {
 jQuery("body").on("click", ".portfolioSelect", function(e){
   var id = jQuery(this).attr("href");
   e.preventDefault();
-  game.setPortData(game.gameData, id)
+  game.setPortData(game.gameData, id);
+
 });
 
 Game.prototype.setPortData = function(data1, i) {
@@ -94,7 +95,7 @@ Game.prototype.setPortData = function(data1, i) {
       this.portCard.shares = amount;
       this.portCard.price = dataPrice;
       this.portCard.balVal = (amount*dataPrice);
-
+      jQuery("#sellSlider").slider( { max: this.portCard.shares } );
     }.bind(this))
 
 
@@ -128,15 +129,50 @@ Game.prototype.getData = function(id, callback) {
     jQuery.getJSON(("/ajax/list/"), function(data1){
       callback(data, data1);
       this.rawData = data1;
-    }.bind(this))
+    }.bind(this));
   }.bind(this));
 
 };
 
-Game.prototype.updateAll = function(id) {
+Game.prototype.placeSell = function(id, amount, price) {
+  var sellValue = amount*price;
+  if(amount <= this.portCard.shares) {
+
+    this.gameData.bought[id] = ~~this.gameData.bought[id] - amount; //AMAZING
+    this.companyCard.calculateStock();
+    this.gameData.balance += sellValue;
+    if(amount === this.gameData.bought[id]) {
+      this.removeCompany(id);
+      console.log("TEST");
+    }
+    jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
+      console.log(data);
+      console.log(err);
+    }); //Push da order to da server;
+    console.log(this.gameData.bought[id]);
+    this.setPortData(this.gameData, id);
+    jQuery("#sellSlider").slider( { max: this.portCard.shares } );
+  } else {
+    alert("NO SALE");
+  }
+
 
 }
 
+jQuery("body").on("click", "#sellButton", function(e) {
+  if(game.companyCard.stockPrice !== "Stock Not available") {
+    game.placeSell(game.portCard.id, game.sellSliderValue, game.companyCard.stockPrice);
+  } else {
+    alert("Cannot place order for stocks because at this time there is no stock data available for this company/it does not exist :D");
+  }
+
+});
+
+
+Game.prototype.removeCompany = function(id) {
+  console.log(this.gameData.bought)
+  delete this.gameData.bought[id];
+}
 
 Game.prototype.tick = function () {
     var now = new Date().getTime();
@@ -187,26 +223,28 @@ Game.prototype.tick = function () {
           tempDate.setDate(tempDate.getDate() + 1);
           this.gameData.day = new Date(tempDate.toUTCString());
 
-          console.log(this.gameData.day);
-
+             jQuery("#sellSlider").slider( { max: this.portCard.shares } );
           jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
 
             this.getData(this.sessionId, function(data) {
               this.setGameData(data);
-
+              console.log(game.gameData.bought.length);
+              if(game.gameData.bought) {
                 this.setPortData(game.gameData, this.portCard.id);
+              }
+                
 
-
+                pushGraphValue(game.gameData.balance);
 
             }.bind(this));
 
           }.bind(this)); //Push da order to da server;
 
          this.getDataForCompany(this.companyCard.companyCard.code, function(data) {
-           console.log(data);
            this.companyCard.stockPrice = data;
            this.companyCard.companyCard.stockprice = "Stock Price: " + data;
-         }.bind(this))
+           jQuery("#sellSlider").slider( { max: this.portCard.shares } );
+         }.bind(this));
 
             this.doneThisSecond = true;
         }

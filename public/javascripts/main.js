@@ -14,6 +14,7 @@
 
 
       game.sliderValue;
+      game.sellSliderValue;
       if(gameId){
         game.init(gameId);
       } else {
@@ -38,6 +39,17 @@
                 game.sliderValue = ui.value;
             }
         }).before("<div style='text-align: center;' id='orderAmount'>Stock: 0</div>");
+
+        //Sell Slider
+        $("#sellSlider").slider({
+            min: 0,
+            max: 1000,
+            step: 1,
+            slide: function(event, ui) {
+                $("#sellAmount").html( "Stock: " + ui.value);
+                game.sellSliderValue = ui.value;
+            }
+        }).before("<div style='text-align: center;' id='sellAmount'>Stock: 0</div>");
 
         //Autocomplete
         //Shizzy jQuery ui autocomplete
@@ -124,8 +136,8 @@
         );
     }
 
-    window.pushGraphValue(10000);
-    window.pushGraphValue(10000);
+    //window.pushGraphValue(10000);
+    //window.pushGraphValue(10000);
 
     //Background Towers, powered by isomer
 
