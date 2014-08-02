@@ -360,7 +360,7 @@ Game.prototype.tick = function () {
            this.companyCard.companyCard.stockprice = "Stock Price: " + data;
            jQuery("#sellSlider").slider( { max: this.portCard.shares } );
          }.bind(this));
-         this.checkCompletion();
+         //this.checkCompletion();
 
             this.doneThisSecond = true;
         }
