@@ -210,15 +210,31 @@ Game.prototype.placeSell = function(id, amount, price) {
                     this.setPortData(game.gameData, this.portCard.id);
                 }.bind(this));
         }.bind(this), "json"); //Push da order to da server;
-
     }
-   
-
   }
-
 }
 
+Game.prototype.updateTotalBalance = function(callback) {
+  var totalBalance = this.gameData.balance;
+  for(var i in this.gameData.bought) {
+    this.getDataForCompany(i, function(data, id) {
+      var dataPrice = data;
+      var amount = this.gameData["bought"][id]
+      totalBalance += (amount*dataPrice);
+      this.valuation = Math.round(totalBalance);
+      if(callback) {
+        callback(totalBalance);
+      }
+    }.bind(this))
+  }
+}
 
+Game.prototype.setTotalBalance = function() {
+  this.updateTotalBalance(function(totBal) {
+    rivets.bind(jQuery("#companyGraphic"), { bal : { date: this.gameData.day, valuation: this.valuation } } );
+  }.bind(this));
+
+}
 
 Game.prototype.tick = function () {
     var now = new Date().getTime();
@@ -293,7 +309,7 @@ Game.prototype.tick = function () {
 
     // test line window.renderTowers({'FRAN': 4, 'GOOG': 2, 'AAPL': 3, 'MICR': 3.25, 'SANF': 3.1111, 'EEJ': 2, 'MJIC': 1.2});
 
-    if (this.secondsActive % 10 === 0) {
+    if (this.secondsActive % 2 === 0) {
         if (!this.doneThisSecond) {
           var tempDate = new Date(this.gameData.day);
           tempDate.setUTCDate(tempDate.getUTCDate() + 1);
@@ -309,10 +325,8 @@ Game.prototype.tick = function () {
               if(game.gameData.bought) {
                 this.setPortData(game.gameData, this.portCard.id);
               }
-                
-
+                this.setTotalBalance();
                 pushGraphValue(game.gameData.balance);
-
             }.bind(this));
 
           }.bind(this)); //Push da order to da server;
