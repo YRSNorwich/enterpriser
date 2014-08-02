@@ -41,14 +41,24 @@ Game.prototype.init = function(id) {
   this.getData(id, function(data) {
 
       this.setGameData(data);
+       this.getDataForCompany(this.companyCard.companyCard.code, function(data) {
+           this.companyCard.stockPrice = data;
+           this.companyCard.companyCard.stockprice = "Stock Price: " + data;
+           jQuery("#sellSlider").slider( { max: this.portCard.shares } );
+         }.bind(this));
       this.rawData = data;
+      
       this.setPortData(game.gameData, "GOOGL");
+      
       this.setBind(this.gameData, jQuery(".yourCard"), function(res) {
+        
         this.setPortfolio([data], jQuery("#portfolio"), function(e) {
+          
           game.tick();
+        
         });
+      
       }.bind(this));
-
 
   }.bind(this));
 
@@ -56,27 +66,55 @@ Game.prototype.init = function(id) {
 
 Game.prototype.setBind = function(data, element, callback) {
   this.view = rivets.bind(element, { yourCard: this.gameData });
+  
   this.portView = rivets.bind(jQuery(".portfolio"), { portdata : this.portCard });
+  
   callback();
 }
 
 Game.prototype.setPortfolio = function(data, element, callback) {
+  
   var bought = data[0]["bought"];
+
   for(var i in bought) {
+
     if( bought.length ) {
+
         element.append(jQuery("<li>No stocks owned yet!</li>"));
+
     } else {
+
       var buildItem = jQuery("<li><a class='portfolioSelect' href='"+i+"'>  Company: " + i + " " + "Stock Owned: " + bought[i] + "</a></li>");
+      
       jQuery('#portlist').append(buildItem);
+
     }
 
   }
+
   callback();
 }
 
+Game.prototype.updatePortfolio = function(callback) {
+  var element = jQuery("#portfolio");
+  this.getData(this.sessionId, function(data1){
+      var data = [data1];
+      var bought = data[0]["bought"];
+        jQuery("#portlist").empty(); //FUCKING LOVE JQUERY :D:D:DD:D::D:D:::D:
+        for(var i in bought) {
+          var buildItem = jQuery("<li><a class='portfolioSelect' href='"+i+"'>  Company: " + i + " " + "Stock Owned: " + bought[i] + "</a></li>");
+          jQuery('#portlist').append(buildItem);
+        }
+        callback();
+  })
+}
+
 jQuery("body").on("click", ".portfolioSelect", function(e){
+  
   var id = jQuery(this).attr("href");
+
   e.preventDefault();
+  
   game.setPortData(game.gameData, id);
 
 });
@@ -86,8 +124,14 @@ Game.prototype.setPortData = function(data1, i) {
     this.getDataForCompany(i, function(data, id) {
 
       var compId = id;
+      
+
       var compName = this.rawData[id]["name"];
+      
+
       var dataPrice = data;
+      
+
       var amount = data1["bought"][id]
 
       this.portCard.name = compName;
@@ -95,7 +139,13 @@ Game.prototype.setPortData = function(data1, i) {
       this.portCard.shares = amount;
       this.portCard.price = dataPrice;
       this.portCard.balVal = (amount*dataPrice);
+      
+
+
       jQuery("#sellSlider").slider( { max: this.portCard.shares } );
+    
+
+
     }.bind(this))
 
 
@@ -123,7 +173,6 @@ Game.prototype.getDataForCompany = function(id, callback) {
 
 
 Game.prototype.getData = function(id, callback) {
-
   jQuery.getJSON((this.ajaxReq+"/"+id), function(data){
     this.setGameData(data);
     jQuery.getJSON(("/ajax/list/"), function(data1){
@@ -131,53 +180,14 @@ Game.prototype.getData = function(id, callback) {
       this.rawData = data1;
     }.bind(this));
   }.bind(this));
-
 };
 
-Game.prototype.placeSell = function(id, amount, price) {
-  
-  var sellValue = amount*price;
-  
-  if( amount <= this.portCard.shares ) {
 
-
-    this.gameData.bought[id] = ~~this.gameData.bought[id] - amount; //AMAZING
-    
-    this.companyCard.calculateStock();
-
-
-    console.log(amount, this.portCard.shares);
-    
-
-    jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
-      console.log(data);
-      console.log(err);
-      this.gameData.balance += sellValue;
-      console.log(id);
-      this.setPortData(this.gameData, id);
-
-    }.bind(this)); //Push da order to da server;
-
-    if(amount === this.portCard.shares) {
-      this.removeCompany(id);
-    }
-    
-    jQuery("#sellSlider").slider( { max: this.portCard.shares } );
-  
-
-  } else {
-    
-
-    alert("NO SALE");
-  
-
-  }
-
-
-}
 
 jQuery("body").on("click", "#sellButton", function(e) {
+  console.log(game.companyCard.stockPrice);
   if(game.companyCard.stockPrice !== "Stock Not available") {
+    console.log("User inited sell for: " + game.portCard.id + " " + game.sellSliderValue )
     game.placeSell(game.portCard.id, game.sellSliderValue, game.portCard.price);
   } else {
     alert("Cannot place order for stocks because at this time there is no stock data available for this company/it does not exist :D");
@@ -185,16 +195,36 @@ jQuery("body").on("click", "#sellButton", function(e) {
 
 });
 
-
-Game.prototype.removeCompany = function(id) {
-  delete this.gameData.bought[id];
-  console.log("TURTLE SHIT")
-  this.setPortfolio([this.gameData], jQuery("#portfolio"), function(e) {
-
-
-
-  });
- 
+Game.prototype.placeSell = function(id, amount, price) { //AMAzING FUCING JOB! ONLY TOOK 1 HOUR AT 2 IN THE FUCKING MORNING
+  var sellValue = (amount * price);
+  if( amount <= this.portCard.shares) { //IF LESS OR EQUAL TO
+    if(!(amount === this.gameData.bought[id])) { //IF NOT SELLING ALL
+       this.gameData.bought[id] = ~~this.gameData.bought[id] - amount; //EDIT STORED VALUE
+       this.companyCard.calculateStock();
+       console.log("Sold for: " + sellValue);
+       this.gameData.balance += sellValue;
+       jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
+                console.log(data);
+                console.log(err);
+                this.updatePortfolio(function() {
+                    this.setPortData(game.gameData, this.portCard.id);
+        }.bind(this));
+        }.bind(this)); //Push da order to da server;
+    } else { //IS SELLING ALL
+       this.gameData.bought[id] = ~~this.gameData.bought[id] - amount; //EDIT STORED VALUE
+       this.companyCard.calculateStock();
+       console.log("Sold for: " + sellValue);
+       this.gameData.balance += sellValue;
+       delete this.gameData.bought[id];
+       jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
+                console.log(data);
+                console.log(err);
+                this.updatePortfolio(function() {
+                    this.setPortData(game.gameData, this.portCard.id);
+        }.bind(this));
+        }.bind(this)); //Push da order to da server;
+    }
+  }
 }
 
 Game.prototype.tick = function () {
@@ -276,7 +306,8 @@ Game.prototype.tick = function () {
           tempDate.setUTCDate(tempDate.getUTCDate() + 1);
           this.gameData.day = new Date(tempDate.toISOString());
 
-             jQuery("#sellSlider").slider( { max: this.portCard.shares } );
+          jQuery("#sellSlider").slider( { max: this.portCard.shares } );
+          
           jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
 
             this.getData(this.sessionId, function(data) {

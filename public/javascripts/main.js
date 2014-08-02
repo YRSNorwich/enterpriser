@@ -73,8 +73,10 @@
                 game.companyCard = new companyCard(ui.item, ui.item.value);
                 game.companyCard.getData(function(data) {
                     game.companyCard.setData(data, function(bindingData) {
-                        game.companyCard.bindView($("#companyCard"), bindingData, function() {
 
+                    
+                        game.companyCard.bindView($("#companyCard"), bindingData, function() {
+                                jQuery('#amountShares').slider({ max: bindingData.stockavailable });
                         });
                     })
                 });

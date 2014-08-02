@@ -111,19 +111,21 @@ function csvGrabberTest(string) {
 
 
 }
-
-/*Reference Function
+//test();
 function test() {
 var Yahoo = new yahoo(babyParseConfig);
-var googleQuery = Yahoo.buildQuery("GOOGL", "2013");
+var googleQuery = Yahoo.buildQuery("GOOGL", "2000");
 Yahoo.executeQuery(googleQuery, function(data) {
 var json = this.csv2json(data, ["Open", "High", "Low", "Adj Close"]);
-var doptions = { name: "GOOGL", query: googleQuery, result: json };
+var doptions = { name: "GOOGL.json", query: googleQuery, result: json };
 //Doptions: Data and options! Combined!!
 Yahoo.writeOut(doptions, function(status) {
 console.log(status);
 });
 });
+}
+/*Reference Function
+
 
 
 }*/
