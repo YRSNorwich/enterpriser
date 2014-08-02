@@ -141,6 +141,31 @@
     //window.pushGraphValue(10000);
     //window.pushGraphValue(10000);
 
+    //Dialogs, for showing educational information
+
+    window.groupDialogWithTrigger = function (name)
+    {
+        $('.dialog-' + name).dialog({ autoOpen: false, modal: true });
+        $('.opener-' + name).on('click', function () {
+            $('.dialog-' + name).dialog('open');
+        });
+    }
+
+    var $allDialogs = $('.dialog');
+    for (var dialogIndex = 0; dialogIndex < $allDialogs.length; dialogIndex++)
+    {
+        var dialog = $allDialogs.get(dialogIndex);
+        for (var classIndex = 0; classIndex < dialog.classList.length; classIndex++)
+        {
+            var className = dialog.classList[classIndex];
+            if (className.indexOf('dialog-') === 0)
+            {
+                window.groupDialogWithTrigger(className.split('-').slice(1).join('-'));
+                break;
+            }
+        }
+    }
+
     //Background Towers, powered by isomer
 
     var backgroundTowersCanvas = document.getElementById('backgroundTowers');
