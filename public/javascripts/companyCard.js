@@ -76,6 +76,9 @@ companyCard.prototype.setData = function(data, callback) {
             jQuery.post("/ajax/game/"+game.sessionId, game.gameData, function(data, err){
                 console.log(data);
                 console.log(err);
+                 game.updatePortfolio(function() {
+                    game.setPortData(game.gameData, game.portCard.id);
+                }.bind(this));
             }); //Push da order to da server;
 
         } else {

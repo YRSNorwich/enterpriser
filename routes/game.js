@@ -36,7 +36,8 @@ exports.giveJson = function(req, res) {
 	}
 }
 
-exports.receiveJson = function(req, res) {
+exports.receiveJson = function(req, res) { 
+	console.log(req.body, "POO");
 	if (req.session.passport.user) {
 		var id = parseInt(req.param('id'));
 

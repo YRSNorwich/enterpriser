@@ -10,6 +10,7 @@ function Game(id) {
   this.ajaxReq = "/ajax/game"
   this.currentCompanyCard;
   this.companyData;
+  this.valuation;
   this.companies = [];
   this.gameData = {
     companyName: null,
@@ -40,6 +41,7 @@ Game.prototype.init = function(id) {
 
   this.getData(id, function(data) {
 
+      pushGraphValue(game.gameData.balance);
       this.setGameData(data);
        this.getDataForCompany(this.companyCard.companyCard.code, function(data) {
            this.companyCard.stockPrice = data;
@@ -73,25 +75,15 @@ Game.prototype.setBind = function(data, element, callback) {
 }
 
 Game.prototype.setPortfolio = function(data, element, callback) {
-  
   var bought = data[0]["bought"];
-
   for(var i in bought) {
-
     if( bought.length ) {
-
         element.append(jQuery("<li>No stocks owned yet!</li>"));
-
     } else {
-
       var buildItem = jQuery("<li><a class='portfolioSelect' href='"+i+"'>  Company: " + i + " " + "Stock Owned: " + bought[i] + "</a></li>");
-      
       jQuery('#portlist').append(buildItem);
-
     }
-
   }
-
   callback();
 }
 
@@ -99,6 +91,7 @@ Game.prototype.updatePortfolio = function(callback) {
   var element = jQuery("#portfolio");
   this.getData(this.sessionId, function(data1){
       var data = [data1];
+
       var bought = data[0]["bought"];
         jQuery("#portlist").empty(); //FUCKING LOVE JQUERY :D:D:DD:D::D:D:::D:
         for(var i in bought) {
@@ -110,46 +103,24 @@ Game.prototype.updatePortfolio = function(callback) {
 }
 
 jQuery("body").on("click", ".portfolioSelect", function(e){
-  
   var id = jQuery(this).attr("href");
-
   e.preventDefault();
-  
   game.setPortData(game.gameData, id);
-
 });
 
 Game.prototype.setPortData = function(data1, i) {
-
     this.getDataForCompany(i, function(data, id) {
-
       var compId = id;
-      
-
       var compName = this.rawData[id]["name"];
-      
-
       var dataPrice = data;
-      
-
       var amount = data1["bought"][id]
-
       this.portCard.name = compName;
       this.portCard.id = compId;
       this.portCard.shares = amount;
       this.portCard.price = dataPrice;
       this.portCard.balVal = (amount*dataPrice);
-      
-
-
       jQuery("#sellSlider").slider( { max: this.portCard.shares } );
-    
-
-
     }.bind(this))
-
-
-
 }
 
 Game.prototype.setGameData = function(data) {
@@ -174,7 +145,9 @@ Game.prototype.getDataForCompany = function(id, callback) {
 
 Game.prototype.getData = function(id, callback) {
   jQuery.getJSON((this.ajaxReq+"/"+id), function(data){
+    delete data.bought["anything"];
     this.setGameData(data);
+
     jQuery.getJSON(("/ajax/list/"), function(data1){
       callback(data, data1);
       this.rawData = data1;
@@ -195,7 +168,7 @@ jQuery("body").on("click", "#sellButton", function(e) {
 
 });
 
-Game.prototype.placeSell = function(id, amount, price) { //AMAzING FUCING JOB! ONLY TOOK 1 HOUR AT 2 IN THE FUCKING MORNING
+Game.prototype.placeSell = function(id, amount, price) {
   var sellValue = (amount * price);
   if( amount <= this.portCard.shares) { //IF LESS OR EQUAL TO
     if(!(amount === this.gameData.bought[id])) { //IF NOT SELLING ALL
@@ -211,21 +184,41 @@ Game.prototype.placeSell = function(id, amount, price) { //AMAzING FUCING JOB! O
         }.bind(this));
         }.bind(this)); //Push da order to da server;
     } else { //IS SELLING ALL
+       console.log("soldALL");
        this.gameData.bought[id] = ~~this.gameData.bought[id] - amount; //EDIT STORED VALUE
        this.companyCard.calculateStock();
        console.log("Sold for: " + sellValue);
        this.gameData.balance += sellValue;
+       console.log(this.gameData.bought[id], id);
+       var whop = "anything";
+       this.gameData.bought[whop] = "Go fuck yourself jQuery.";
+       
        delete this.gameData.bought[id];
+
+      /*) if(this.gameData.bought === undefined) {
+        console.log("POPOD");
+        this.gameData.bought = {};
+       }*/
+       //console.log(this.gameData.bought, "POO");
        jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
                 console.log(data);
                 console.log(err);
+                console.log(this.gameData.bought);
+                console.log(data.bought);
                 this.updatePortfolio(function() {
+                  console.log(this.gameData.bought);
                     this.setPortData(game.gameData, this.portCard.id);
-        }.bind(this));
-        }.bind(this)); //Push da order to da server;
+                }.bind(this));
+        }.bind(this), "json"); //Push da order to da server;
+
     }
+   
+
   }
+
 }
+
+
 
 Game.prototype.tick = function () {
     var now = new Date().getTime();
