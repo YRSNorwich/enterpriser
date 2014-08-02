@@ -4,7 +4,11 @@
 <section class="playView">
 	<section id="left">
 		<section id="search">
-			<h3>Search For Company:</h3>
+			<h3>Search For Company<div class="opener opener-company"></div>:</h3>
+			<div class="dialog dialog-company" title="The Stock Market">
+				<p>The Stock Market is made up of many different people who are buying and exchanging stocks (shares) for companies.</p>
+				<p>Each stock represents partial ownership of a company, with the amount dictating the equity (amount they own of it).</p>1
+			</div>
 			<div class="ui-widget">
 				<div class="ui-front">
 					<input id="companySearch" type="text" placeholder="Find Company">
@@ -29,6 +33,12 @@
 			<div id="orderStock">
 				<div class="slider" id="amountShares"></div>
 				<button id="placeOrder">Place Order</button>
+				<span class="opener opener-order"></span>
+				<div class="dialog dialog-order" title="Investment">
+					<p>Stocks can be bought from companies if you have the funds.</p>
+					<p>As stocks increase/reduce in value from day to day, if you buys stocks cheap then sell them later for more than you bought them for, you make a profit!</p>
+					<p>Try to judge the stocks that will increase in value from their history and invest wisely.</p>
+				</div>
 				<div id="stats"></div>
 			</div>
 		</section>
@@ -36,6 +46,12 @@
 	<section id="companyGraphic">
 		<h1>Enterpriser</h1>
 		<h2>Company - $Valuation (Stocks + Balance)</h2>
+		<span class="opener opener-towers"></span>
+		<div class="dialog dialog-towers" title="Towers">
+			<p>The height of the tower buildings indicate the amount of percentage you have in the companies you have bought.</p>
+			<p>The central one is yours and others are shown in linking colours.</p>
+			<p>If all your towers are full, excellent! You are quite the invester!</p>
+		</div>
 	</section>
 
 
@@ -51,6 +67,11 @@
 			<hr>
 			<div id="portfolio">
 				<h3>Your Portfolio</h3>
+				<span class="opener opener-portfolio"></span>
+				<div class="dialog dialog-portfolio" title="Portfolio">
+					<p>Your portfolio is made up of the stocks of value that you have accumulated. Click on them to see a little more about them.</p>
+					<p>The outline of your wealth, you may to choose to do with your portfolio as you wish; it is your property.</p>
+				</div>
         <ul id="portlist">
         </ul>
 		<hr>
@@ -64,6 +85,11 @@
 					<h3>Sell your stocks in this company</h3>
 					<div id="sellSlider"></div>
 					<button id="sellButton">Sell</button>
+					<span class="opener opener-sell"></span>
+					<div class="dialog dialog-sell" title="Profit">
+						<p>It is wise to sell stocks when they appear to be more highly priced than they were when bought or if you need money for other investments.</p>
+						<p>Make sure you don't give them away too cheaply though!</p>
+					</div>
 				</ul>
 			</div>
 		</div>
@@ -71,6 +97,11 @@
 	<hr>
 	<div id="valueGraph"></div>
 	<div id="stats">Stats</div>
+	<span class="opener opener-your-graph"></span>
+	<div class="dialog dialog-your-graph" title="Your Graph">
+		<p>This graph shows you how your company's balance and the value of your portfolio are growing (or falling) as a whole.</p>
+		<p>If the line goes up up up then you're doing great, else, you may want to reconsider some of your decisions.</p>
+	</div>
 </section>
 </section>
 </section>
