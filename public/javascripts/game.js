@@ -3,9 +3,8 @@ var IDEAL_TPS = 60;
 var IDEAL_TICK_DURATION = 1000 / IDEAL_TPS;
 
 function Game(id) {
-
-
   this.time = "3/1/2004";
+  this.endGameDate = new Date("2004/1/1");
   this.sessionId = id;
   this.ajaxReq = "/ajax/game"
   this.currentCompanyCard;
@@ -145,7 +144,12 @@ Game.prototype.getDataForCompany = function(id, callback) {
 
 Game.prototype.getData = function(id, callback) {
   jQuery.getJSON((this.ajaxReq+"/"+id), function(data){
-    delete data.bought["anything"];
+    try {
+      delete data.bought["anything"];
+    } catch (e) {
+
+    }
+    
     this.setGameData(data);
 
     jQuery.getJSON(("/ajax/list/"), function(data1){
@@ -195,11 +199,6 @@ Game.prototype.placeSell = function(id, amount, price) {
        
        delete this.gameData.bought[id];
 
-      /*) if(this.gameData.bought === undefined) {
-        console.log("POPOD");
-        this.gameData.bought = {};
-       }*/
-       //console.log(this.gameData.bought, "POO");
        jQuery.post("/ajax/game/"+this.sessionId, this.gameData, function(data, err){
                 console.log(data);
                 console.log(err);
@@ -227,6 +226,31 @@ Game.prototype.updateTotalBalance = function(callback) {
       }
     }.bind(this))
   }
+}
+
+Game.prototype.checkCompletion = function() {
+  var endDay = new Date(this.gameData.day);
+  //if(endDay == this.endGameDate) {
+    var endGameDiv = jQuery("<div id='endgamediv'></div>");
+    endGameDiv.append("<h3>Game Completed!</h3>");
+    endGameDiv.append("<p>You completed the game with a profit of: "+(10000-this.valuation)+"; with shares in the following companies: ");
+    var endGameList = jQuery("<ul></ul>");
+    for(var i in this.gameData.bought) {
+      endGameList.append(jQuery("<li> Stock: " + i + " Amount: " + this.gameData.bought[i]));
+    }
+    endGameDiv.append(endGameList);
+    endGameDiv.dialog({
+      resizable: false,
+      height:140,
+      modal: true,
+      buttons: {
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+    jQuery("body").append(endGameDiv);
+  //}
 }
 
 Game.prototype.setTotalBalance = function() {
@@ -336,6 +360,7 @@ Game.prototype.tick = function () {
            this.companyCard.companyCard.stockprice = "Stock Price: " + data;
            jQuery("#sellSlider").slider( { max: this.portCard.shares } );
          }.bind(this));
+         this.checkCompletion();
 
             this.doneThisSecond = true;
         }
