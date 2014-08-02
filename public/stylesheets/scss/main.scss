@@ -93,6 +93,47 @@ body
 	font-size: 2em;
 }
 
+.opener
+{
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  text-align: center;
+  background-color: blue;
+  color: white;
+  border-radius: 8px;
+  font-size: 12px;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.opener:before
+{
+  content: 'i';
+}
+
+.dialog
+{
+	font-family: 'Roboto Slab' !important;
+	font-size: 12pt;
+
+	p
+	{
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
+}
+
+.ui-widget-header
+{
+	background: none !important;
+	border: none !important;
+	border-bottom: 1px black solid !important;
+
+	font-family: 'Roboto Slab';
+	color: black !important;
+}
+
 hr
 {
 	border: none;
